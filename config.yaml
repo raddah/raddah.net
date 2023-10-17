@@ -170,8 +170,8 @@ params:
   mainSections:
     - post
   featuredImageField: image
-  rssFullContent: false
-  favicon: favicon/favicon.ico
+  rssFullContent: true
+  favicon: favicon.ico
 
   footer:
 #    since: 2023
