@@ -1,0 +1,32 @@
+---
+import BlogLayout from '@/layouts/BlogLayout.astro';
+import { render } from 'astro:content';
+import { getPostsByLocale, getRecentPosts, getSlugFromId } from '@/utils/content';
+import { readingTime } from '@/utils/reading-time';
+import type { GetStaticPaths } from 'astro';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const locale = 'zh';
+  const posts = await getPostsByLocale(locale);
+  return posts.map((post) => ({
+    params: { slug: getSlugFromId(post.id) },
+    props: { post },
+  }));
+};
+
+const { post } = Astro.props;
+const locale = 'zh';
+const { Content, headings } = await render(post);
+const related = await getRecentPosts(locale, post.id, 3);
+const minutes = readingTime(post.body ?? '', locale);
+---
+
+<BlogLayout
+  post={post}
+  locale={locale}
+  headings={headings}
+  related={related}
+  readingMinutes={minutes}
+>
+  <Content />
+</BlogLayout>

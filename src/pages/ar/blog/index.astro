@@ -1,0 +1,48 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import DiwanList from '@/components/blog/DiwanList.astro';
+import SearchDialog from '@/components/global/SearchDialog.astro';
+import { getPostsByLocale } from '@/utils/content';
+
+const locale = 'ar';
+const posts = await getPostsByLocale(locale);
+---
+
+<PageLayout
+  title="المقالات — raddah.net"
+  description="جميع المقالات المنشورة في ديوان رَدّه"
+  locale={locale}
+>
+  <SearchDialog locale={locale} />
+  <div class="blog-listing container">
+    <header class="blog-listing__head">
+      <h1>الديوان</h1>
+      <p class="count">{posts.length} مقالة</p>
+    </header>
+    <DiwanList posts={posts} locale={locale} startNum={1} showHeader={false} />
+  </div>
+</PageLayout>
+
+<style>
+  .blog-listing { padding-block: var(--s-8); }
+  .blog-listing__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-block-end: var(--s-4);
+    border-block-end: 1px solid var(--ink);
+    margin-block-end: var(--s-3);
+  }
+  .blog-listing__head h1 {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-4xl);
+    font-weight: 500;
+  }
+  .count {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+  }
+</style>

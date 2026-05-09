@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <rect width="120" height="120" fill="#F4EDE0"/>
+  <polygon
+    points="60,8 108,34 108,86 60,112 12,86 12,34"
+    fill="none"
+    stroke="#1C1410"
+    stroke-width="5"
+  />
+  <text
+    x="60"
+    y="80"
+    text-anchor="middle"
+    font-family="Reem Kufi, serif"
+    font-size="56"
+    font-weight="700"
+    fill="#1C1410"
+  >ر</text>
+  <circle cx="100" cy="22" r="8" fill="#B23A24"/>
+</svg>

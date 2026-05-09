@@ -1,0 +1,51 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import ProjectCard from '@/components/project/ProjectCard.astro';
+
+const locale = 'en';
+const projects = [
+  {
+    name: 'AOSUS Community',
+    desc: 'AOSUS is the largest Arabic community around free and open-source software, aimed at spreading it and promoting a culture of contribution. I co-founded a community dedicated to free and open-source software, working with many Arab creators around the world to build it.',
+    url: 'https://aosus.org',
+    image: '/images/projects/aosus.jpg',
+    tags: ['Open Source', 'Community', 'Arabic', 'Free Software'],
+    role: 'Co-Founder',
+    status: 'Active',
+  },
+  {
+    name: 'raddah.net',
+    desc: 'My personal blog — originally built with Hugo, now rebuilt with Astro 5 with trilingual support (Arabic, English, Chinese) and deployed on Cloudflare Pages.',
+    url: 'https://raddah.net',
+    repo: 'https://github.com/raddah/raddah.net',
+    image: '/images/projects/raddah-logo.svg',
+    tags: ['Astro', 'Hugo', 'Cloudflare', 'TypeScript', 'i18n'],
+    role: 'Owner',
+    status: 'Rebuilding',
+  },
+];
+---
+
+<PageLayout title="Projects — raddah.net" description="Open-source projects and work I have founded or contributed to over the years." locale={locale}>
+  <section class="projects container">
+    <header class="projects__head">
+      <h1>Projects</h1>
+      <p class="projects__intro">Open-source projects and work I have founded or contributed to over the years.</p>
+    </header>
+
+    <div class="projects__grid">
+      {projects.map((p) => (
+        <ProjectCard {...p} locale={locale} />
+      ))}
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .projects { padding-block: var(--s-9) var(--s-7); }
+  .projects__head { margin-block-end: var(--s-7); padding-block-end: var(--s-5); border-block-end: 1px solid var(--ink); }
+  .projects__head h1 { font-family: var(--font-en-display); font-size: var(--t-5xl); font-style: italic; font-weight: 300; line-height: 1; }
+  .projects__intro { margin-block-start: var(--s-4); font-size: var(--t-lg); color: var(--ink-soft); line-height: 1.75; }
+  .projects__grid { display: grid; grid-template-columns: 1fr; gap: var(--s-6); }
+  @media (min-width: 720px) { .projects__grid { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); } }
+</style>

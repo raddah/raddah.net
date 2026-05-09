@@ -1,0 +1,122 @@
+---
+import type { Locale } from '@/i18n';
+import { locales, localeConfig } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="foot">
+  <div class="foot__inner container">
+    <div class="foot__brand-block">
+      <div class="foot__brand">{t('footer.brand')}</div>
+      <p class="foot__tagline">{t('footer.tagline')}</p>
+    </div>
+
+    <div class="foot__col">
+      <h4>{t('footer.content')}</h4>
+      <ul>
+        <li><a href={`/${locale}/`}>{t('nav.diwan')}</a></li>
+        <li><a href={`/${locale}/projects/`}>{t('nav.projects')}</a></li>
+        <li><a href={`/${locale}/about/`}>{t('nav.about')}</a></li>
+        <li><a href={`/${locale}/archives/`}>{t('nav.archives')}</a></li>
+        <li><a href={`/${locale}/rss.xml`}>{t('nav.rss')}</a></li>
+      </ul>
+    </div>
+
+    <div class="foot__col">
+      <h4>{t('footer.links')}</h4>
+      <ul>
+        <li><a href="https://github.com/raddah" rel="me noopener" target="_blank">GitHub</a></li>
+        <li><a href="https://twitter.com/raddah" rel="me noopener" target="_blank">X / Twitter</a></li>
+        <li><a href="mailto:hello@raddah.net">Email</a></li>
+      </ul>
+    </div>
+
+    <div class="foot__col">
+      <h4>{t('footer.languages')}</h4>
+      <ul>
+        {locales.map((lc) => (
+          <li>
+            <a href={`/${lc}/`} hreflang={localeConfig[lc].hrefLang}>
+              {localeConfig[lc].nativeName}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="foot__bottom">
+      <span>© {year} raddah · {t('footer.rights')}</span>
+      <span>{t('footer.builtWith')}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .foot {
+    background: var(--paper-deep);
+    border-block-start: 1px solid var(--rule);
+    padding-block: var(--s-7) var(--s-5);
+    margin-block-start: var(--s-9);
+  }
+  .foot__inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+  }
+  @media (min-width: 720px) {
+    .foot__inner { grid-template-columns: 2fr 1fr 1fr 1fr; gap: var(--s-6); }
+  }
+  .foot__brand {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-2xl);
+    font-weight: 500;
+    margin-block-end: var(--s-2);
+  }
+  .foot__tagline {
+    font-size: var(--t-sm);
+    color: var(--ink-mute);
+    max-width: 30ch;
+    line-height: 1.7;
+  }
+  .foot__col h4 {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+    margin-block-end: var(--s-3);
+    font-weight: 500;
+  }
+  .foot__col ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2);
+  }
+  .foot__col a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: var(--t-sm);
+    transition: color var(--t-fast) var(--ease);
+  }
+  .foot__col a:hover { color: var(--vermillion); }
+
+  .foot__bottom {
+    grid-column: 1 / -1;
+    margin-block-start: var(--s-6);
+    padding-block-start: var(--s-3);
+    border-block-start: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--s-3);
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+interface Props {
+  variant?: 'solid' | 'ghost' | 'accent' | 'subtle';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  class?: string;
+  ariaLabel?: string;
+}
+
+const {
+  variant = 'solid',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  class: className = '',
+  ariaLabel,
+} = Astro.props;
+
+const Tag = href ? 'a' : 'button';
+const classes = `btn btn--${variant} btn--${size} ${className}`.trim();
+---
+
+<Tag
+  class={classes}
+  href={href}
+  type={!href ? type : undefined}
+  disabled={!href ? disabled : undefined}
+  aria-label={ariaLabel}
+>
+  <slot />
+</Tag>
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-family: var(--font-ar-display);
+    text-decoration: none;
+    border: 1px solid currentColor;
+    cursor: pointer;
+    transition: all var(--t-base) var(--ease);
+    border-radius: 0;
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+  .btn[disabled] { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+  .btn--sm { font-size: var(--t-xs); padding: var(--s-2) var(--s-3); }
+  .btn--md { font-size: var(--t-sm); padding: var(--s-3) var(--s-5); }
+  .btn--lg { font-size: var(--t-base); padding: var(--s-4) var(--s-6); }
+
+  .btn--solid {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .btn--solid:hover {
+    background: var(--vermillion);
+    border-color: var(--vermillion);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    color: var(--ink);
+    border-color: var(--ink);
+  }
+  .btn--ghost:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .btn--accent {
+    background: var(--vermillion);
+    color: var(--paper);
+    border-color: var(--vermillion);
+  }
+  .btn--accent:hover {
+    background: var(--vermillion-deep);
+    border-color: var(--vermillion-deep);
+  }
+
+  .btn--subtle {
+    background: transparent;
+    color: var(--ink-soft);
+    border-color: var(--rule);
+  }
+  .btn--subtle:hover {
+    color: var(--vermillion);
+    border-color: var(--vermillion);
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import ProjectCard from '@/components/project/ProjectCard.astro';
+
+const locale = 'ar';
+const projects = [
+  {
+    name: 'مجتمع أسس',
+    nameEn: 'AOSUS Community',
+    desc: 'مجتمع أسس هو أكبر مجتمع عربي حول البرمجيات الحرة والمفتوحة المصدر، ويهدف إلى نشرها ونشر ثقافة المساهمة بها. قمت بالمشاركة في التأسيس لمجتمع يُعنى بالبرمجيات الحرة والمفتوحة المصدر وأسميناه أُسُس حيث قمت بالعمل مع العديد من المبدعين العرب حول العالم في إنشاء هذا المجتمع.',
+    url: 'https://aosus.org',
+    image: '/images/projects/aosus.jpg',
+    tags: ['مفتوح المصدر', 'مجتمع', 'عربي', 'برمجيات حرة'],
+    role: 'مؤسس مشارك',
+    status: 'نشط',
+  },
+  {
+    name: 'raddah.net',
+    nameEn: 'raddah.net',
+    desc: 'مدوّنتي الشخصية — بُنيت أصلاً بـ Hugo وجارٍ إعادة بنائها بـ Astro 5 مع دعم ثلاثي اللغات (عربي، إنجليزي، صيني) ونشرها على Cloudflare Pages.',
+    url: 'https://raddah.net',
+    repo: 'https://github.com/raddah/raddah.net',
+    image: '/images/projects/raddah-logo.svg',
+    tags: ['Astro', 'Hugo', 'Cloudflare', 'TypeScript', 'i18n'],
+    role: 'مالك',
+    status: 'إعادة بناء',
+  },
+];
+---
+
+<PageLayout title="مشاريعي — raddah.net" description="مشاريع مفتوحة المصدر وأعمالي على مر السنين" locale={locale}>
+  <section class="projects container">
+    <header class="projects__head">
+      <h1>مشاريعي</h1>
+      <p class="projects__intro">مشاريع مفتوحة المصدر وأعمال أسهمت في تأسيسها أو المساهمة بها على مر السنين.</p>
+    </header>
+
+    <div class="projects__grid">
+      {projects.map((p) => (
+        <ProjectCard {...p} locale={locale} />
+      ))}
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .projects { padding-block: var(--s-9) var(--s-7); }
+  .projects__head { margin-block-end: var(--s-7); padding-block-end: var(--s-5); border-block-end: 1px solid var(--ink); }
+  .projects__head h1 { font-family: var(--font-ar-display); font-size: var(--t-5xl); font-weight: 500; line-height: 1; }
+  .projects__intro { margin-block-start: var(--s-4); font-family: var(--font-ar-body); font-size: var(--t-lg); color: var(--ink-soft); line-height: 1.85; }
+  .projects__grid { display: grid; grid-template-columns: 1fr; gap: var(--s-6); }
+  @media (min-width: 720px) { .projects__grid { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); } }
+</style>

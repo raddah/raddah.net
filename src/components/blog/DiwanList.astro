@@ -1,0 +1,231 @@
+---
+import type { Locale } from '@/i18n';
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations } from '@/i18n/ui';
+import { formatDate, formatNumber } from '@/utils/date';
+import { readingTime } from '@/utils/reading-time';
+import { getSlugFromId } from '@/utils/content';
+import PostThumbnail from '@/components/ui/PostThumbnail.astro';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  locale: Locale;
+  startNum?: number;
+  showHeader?: boolean;
+}
+
+const { posts, locale, startNum = 2, showHeader = true } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="diwan container">
+  {showHeader && (
+    <div class="diwan__head">
+      <h2><span class="diwan__roman">II.</span> {t('home.recent')}</h2>
+      <a href={`/${locale}/blog/`} class="diwan__action">
+        {t('home.viewAll')} →
+      </a>
+    </div>
+  )}
+
+  <ol class="diwan__list">
+    {posts.map((post, i) => {
+      const slug = getSlugFromId(post.id);
+      const minutes = readingTime(post.body ?? '', locale);
+      const num = formatNumber(startNum + i, locale).padStart(2, '0');
+      return (
+        <li class="diwan__item">
+          <a href={`/${locale}/blog/${slug}/`} class="diwan__thumb-link">
+            <PostThumbnail
+              src={post.data.heroImage}
+              alt={post.data.heroImageAlt ?? post.data.title}
+              locale={locale}
+              index={startNum + i - 1}
+              ratio="3/2"
+              class="diwan__thumb"
+            />
+          </a>
+          <div class="diwan__content">
+            <div class="diwan__cat">{post.data.category}</div>
+            <h3 class="diwan__title">
+              <a href={`/${locale}/blog/${slug}/`}>{post.data.title}</a>
+            </h3>
+            <p class="diwan__excerpt">{post.data.description}</p>
+          </div>
+          <div class="diwan__meta">
+            <time datetime={post.data.publishDate.toISOString()}>
+              {formatDate(post.data.publishDate, locale)}
+            </time>
+            <span>{minutes} {t('post.minutes')}</span>
+          </div>
+        </li>
+      );
+    })}
+  </ol>
+</section>
+
+<style>
+  .diwan { padding-block: var(--s-7); }
+
+  .diwan__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s-4);
+    padding-block-end: var(--s-4);
+    border-block-end: 1px solid var(--ink);
+    margin-block-end: var(--s-5);
+    flex-wrap: wrap;
+  }
+  .diwan__head h2 {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-2xl);
+    font-weight: 500;
+  }
+  :global([lang="en"]) .diwan__head h2 { font-family: var(--font-en-display); font-style: italic; }
+  :global([lang="zh"]) .diwan__head h2 { font-family: var(--font-zh); }
+
+  .diwan__roman {
+    color: var(--vermillion);
+    font-size: 0.7em;
+    margin-inline-end: var(--s-2);
+    font-family: var(--font-mono);
+  }
+
+  .diwan__action {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-mute);
+    text-decoration: none;
+    transition: color var(--t-fast) var(--ease);
+  }
+  .diwan__action:hover { color: var(--vermillion); }
+
+  /* Mobile-first: horizontal list with thumb on the left */
+  .diwan__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .diwan__item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: var(--s-4);
+    padding-block: var(--s-5);
+    border-block-end: 1px solid var(--rule);
+    align-items: start;
+    position: relative;
+    transition: padding var(--t-base) var(--ease);
+  }
+  .diwan__item:hover { padding-inline-start: var(--s-3); }
+  .diwan__item:hover::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 2px;
+    background: var(--vermillion);
+  }
+
+  .diwan__thumb-link {
+    display: block;
+    text-decoration: none;
+  }
+  .diwan__thumb {
+    width: 100px;
+  }
+
+  .diwan__content { min-width: 0; }
+  .diwan__cat {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--vermillion);
+    margin-block-end: var(--s-2);
+  }
+  .diwan__title {
+    font-family: var(--font-ar-display);
+    font-size: clamp(1.1rem, 1.8vw, var(--t-xl));
+    font-weight: 500;
+    line-height: 1.35;
+    margin-block-end: var(--s-2);
+  }
+  :global([lang="en"]) .diwan__title { font-family: var(--font-en-display); font-style: italic; font-weight: 400; }
+  :global([lang="zh"]) .diwan__title { font-family: var(--font-zh); font-weight: 600; }
+  .diwan__title a { color: var(--ink); text-decoration: none; }
+  .diwan__title a:hover { color: var(--vermillion); }
+
+  .diwan__excerpt {
+    font-size: var(--t-sm);
+    color: var(--ink-mute);
+    line-height: 1.7;
+    max-width: 60ch;
+  }
+
+  .diwan__meta {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--ink-mute);
+    text-align: end;
+    white-space: nowrap;
+    letter-spacing: 0.1em;
+    display: grid;
+    gap: var(--s-1);
+  }
+  .diwan__meta time {
+    color: var(--ink-soft);
+    display: block;
+  }
+
+  @media (max-width: 600px) {
+    .diwan__meta { display: none; }
+  }
+
+  /* Larger screens: responsive card grid */
+  @media (min-width: 768px) {
+    .diwan__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--s-5);
+    }
+    .diwan__item {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      border-block-end: none;
+      border: 1px solid var(--rule);
+      border-radius: var(--r-sm);
+      overflow: hidden;
+      transition: border-color var(--t-base) var(--ease);
+    }
+    .diwan__item:hover {
+      padding-inline-start: 0;
+      border-color: var(--ink);
+    }
+    .diwan__item:hover::before { display: none; }
+
+    .diwan__thumb-link { width: 100%; }
+    .diwan__thumb {
+      width: 100%;
+      border-radius: 0;
+    }
+
+    .diwan__content {
+      padding: var(--s-5);
+      flex: 1;
+    }
+    .diwan__meta {
+      padding: 0 var(--s-5) var(--s-5);
+      text-align: start;
+      border-block-start: 1px solid var(--rule);
+      padding-block-start: var(--s-3);
+      display: flex;
+      gap: var(--s-3);
+      flex-wrap: wrap;
+    }
+  }
+</style>

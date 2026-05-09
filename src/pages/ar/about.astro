@@ -1,0 +1,74 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="عني — raddah.net"
+  description="أنا رَدَّه الزهراني مهتم بالتقنية وخصوصا البرمجيات الحرة والمفتوحة المصدر"
+  locale="ar"
+>
+  <article class="about container">
+    <header class="about__head">
+      <div class="about__kicker">عني</div>
+      <h1>رَدَّه الزهراني</h1>
+      <p class="about__role">شغوف · طموح · مؤسس ومساهم لعدة مشاريع</p>
+    </header>
+
+    <div class="about__body">
+      <div class="about__bio">
+        <p>
+          أنا رَدَّه الزهراني مهتم بالتقنية وخصوصا البرمجيات الحرة والمفتوحة المصدر من ناحية العتاد والبرمجيات، عملت في عدة مجالات من التقنيات التشغيلية وتقنية المعلومات، أسست عدة مشاريع صغيرة وكبيرة.
+        </p>
+        <p>
+          أستطيع القول عن نفسي بأنني شخص شغوف وطموح أمتلك مهارات قوية في مجال البرمجيات الحرة والمفتوحة المصدر، على مر السنوات أسعى جاهدا للتحقيق والتطوير والابتكار في هذا المجال الكبير من تأسيس ومشاركة للمشاريع والأفكار إلخ.
+        </p>
+        <p>
+          أؤمن إيمانا بحتا بأهمية اكتساب المعرفة والعمل الجاد بلا حدود وأؤمن بأن الخير يقع دائماً على عاتق اللذين يعملون بجد واجتهاد ويسعون جاهدين لنشر هذا الإيمان أو الفلسفة.
+        </p>
+        <p>
+          أستهل وقتي بالتجربة والتعلم والتعليم للعديد من الجوانب التقنية وتكنولوجيا المعلومات في مختبري الصغير، حيث أقوم بالعمل على مجموعة متنوعة من المجالات، بدءًا من الأجهزة والمتحكمات وصولًا إلى تطوير وتشغيل الأنظمة واستخدام تقنيات الذكاء الاصطناعي والتعلم العميق وسلسلة الكتل وإنترنت الأشياء والحوسبة السحابية.
+        </p>
+        <blockquote>
+          اطْلُبِ العلمَ ولا تَكْسَلْ، فَمَا أَبْعَدَ الخَيْر على أهْلِ الكَسَلْ
+        </blockquote>
+      </div>
+
+      <div class="about__links">
+        <h2>التواصل</h2>
+        <ul>
+          <li><a href="https://twitter.com/iRaddah_" target="_blank" rel="me noopener">X / Twitter — @iRaddah_</a></li>
+          <li><a href="https://github.com/Raddah" target="_blank" rel="me noopener">GitHub — Raddah</a></li>
+        </ul>
+
+        <h2>مجالات الاهتمام</h2>
+        <ul class="tags">
+          <li>برمجيات حرة ومفتوحة المصدر</li>
+          <li>حوسبة سحابية</li>
+          <li>إنترنت الأشياء</li>
+          <li>ذكاء اصطناعي وتعلم عميق</li>
+          <li>سلسلة الكتل</li>
+          <li>تقنيات التشغيل</li>
+          <li>المتحكمات والأجهزة</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</PageLayout>
+
+<style>
+  .about { padding-block: var(--s-9) var(--s-7); max-width: 900px; }
+  .about__head { margin-block-end: var(--s-7); padding-block-end: var(--s-6); border-block-end: 1px solid var(--rule); }
+  .about__kicker { font-family: var(--font-mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.3em; color: var(--vermillion); margin-block-end: var(--s-3); }
+  .about__head h1 { font-family: var(--font-ar-display); font-size: var(--t-6xl); font-weight: 500; line-height: 0.9; margin-block-end: var(--s-3); }
+  .about__role { font-family: var(--font-mono); font-size: var(--t-sm); color: var(--ink-mute); letter-spacing: 0.15em; text-transform: uppercase; }
+  .about__body { display: grid; grid-template-columns: 1fr; gap: var(--s-7); }
+  @media (min-width: 720px) { .about__body { grid-template-columns: 2fr 1fr; } }
+  .about__bio p { font-family: var(--font-ar-body); font-size: var(--t-lg); line-height: 1.95; color: var(--ink-soft); margin-block-end: var(--s-5); }
+  .about__bio blockquote { border-inline-start: 3px solid var(--vermillion); padding-inline-start: var(--s-5); font-family: var(--font-ar-display); font-size: var(--t-xl); line-height: 1.5; color: var(--ink); font-style: italic; margin-block-start: var(--s-6); }
+  .about__links h2 { font-family: var(--font-mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.2em; color: var(--ink-mute); margin-block: var(--s-5) var(--s-3); padding-block-end: var(--s-2); border-block-end: 1px solid var(--rule); }
+  .about__links ul { display: grid; gap: var(--s-2); }
+  .about__links a { color: var(--ink-soft); font-size: var(--t-sm); text-decoration: none; transition: color var(--t-fast) var(--ease); }
+  .about__links a:hover { color: var(--vermillion); }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .tags li { font-family: var(--font-mono); font-size: var(--t-xs); padding: var(--s-1) var(--s-3); border: 1px solid var(--rule); color: var(--ink-soft); }
+</style>

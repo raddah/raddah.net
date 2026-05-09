@@ -1,0 +1,95 @@
+---
+import type { Locale } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
+import { formatNumber } from '@/utils/date';
+
+interface Props {
+  locale: Locale;
+  postCount: number;
+}
+
+const { locale, postCount } = Astro.props;
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
+---
+
+<section class="masthead container">
+  <div class="masthead__meta">
+    <span>{t('home.volume')} · {year}</span>
+    <span class="masthead__num">{formatNumber(postCount, locale)}</span>
+    <span>{t('home.posts')}</span>
+  </div>
+
+  <h1 class="masthead__title">
+    {locale === 'ar' && (<>ديوان <span class="em">رَدّه</span></>)}
+    {locale === 'en' && (<>raddah's <span class="em">diwan</span></>)}
+    {locale === 'zh' && (<>拉达 <span class="em">诗集</span></>)}
+  </h1>
+
+  <p class="masthead__tagline">{t('home.tagline')}</p>
+</section>
+
+<style>
+  .masthead {
+    padding-block: var(--s-9) var(--s-7);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-5);
+    border-block-end: 1px solid var(--rule);
+  }
+  @media (min-width: 720px) {
+    .masthead {
+      grid-template-columns: auto 1fr auto;
+      align-items: end;
+      gap: var(--s-7);
+    }
+  }
+
+  .masthead__meta {
+    display: grid;
+    gap: var(--s-1);
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-mute);
+  }
+  .masthead__num {
+    font-size: var(--t-3xl);
+    letter-spacing: 0;
+    color: var(--ink);
+    font-family: var(--font-ar-display);
+    font-weight: 500;
+  }
+
+  .masthead__title {
+    font-family: var(--font-ar-display);
+    font-size: clamp(3rem, 9vw, var(--t-7xl));
+    line-height: 0.92;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  :global([lang="en"]) .masthead__title {
+    font-family: var(--font-en-display);
+    font-style: italic;
+    font-weight: 400;
+  }
+  :global([lang="zh"]) .masthead__title {
+    font-family: var(--font-zh);
+    font-weight: 600;
+  }
+  .masthead__title .em { color: var(--vermillion); }
+
+  .masthead__tagline {
+    max-width: 24ch;
+    font-family: var(--font-ar-body);
+    font-size: var(--t-base);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    font-style: italic;
+    border-inline-start: 2px solid var(--vermillion);
+    padding-inline-start: var(--s-4);
+  }
+  :global([lang="en"]) .masthead__tagline { font-family: var(--font-en-body); }
+  :global([lang="zh"]) .masthead__tagline { font-family: var(--font-zh); }
+</style>

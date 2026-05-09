@@ -1,0 +1,158 @@
+---
+import type { Locale } from '@/i18n';
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations } from '@/i18n/ui';
+import { formatDate } from '@/utils/date';
+import { readingTime } from '@/utils/reading-time';
+import { getSlugFromId } from '@/utils/content';
+import PostThumbnail from '@/components/ui/PostThumbnail.astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  locale: Locale;
+}
+
+const { post, locale } = Astro.props;
+const t = useTranslations(locale);
+const slug = getSlugFromId(post.id);
+const href = `/${locale}/blog/${slug}/`;
+const minutes = readingTime(post.body ?? '', locale);
+---
+
+<section class="featured container">
+  <a href={href} class="featured__image-wrap">
+    <PostThumbnail
+      src={post.data.heroImage}
+      alt={post.data.heroImageAlt ?? post.data.title}
+      locale={locale}
+      index={0}
+      ratio="16/9"
+      class="featured__thumb"
+    />
+  </a>
+
+  <div class="featured__content">
+    <div class="featured__kicker">
+      <span>{t('home.featured')}</span>
+    </div>
+
+    <h2 class="featured__title">
+      <a href={href}>{post.data.title}</a>
+    </h2>
+
+    <p class="featured__excerpt">{post.data.description}</p>
+
+    <div class="featured__meta">
+      <time datetime={post.data.publishDate.toISOString()}>
+        {formatDate(post.data.publishDate, locale)}
+      </time>
+      <span>{minutes} {t('post.readingTime')}</span>
+      <span>{post.data.category}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .featured {
+    padding-block: var(--s-7);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+    border-block-end: 1px solid var(--rule);
+  }
+  @media (min-width: 720px) {
+    .featured {
+      grid-template-columns: 1.1fr 1fr;
+      gap: var(--s-7);
+    }
+  }
+
+  .featured__image-wrap {
+    display: block;
+    text-decoration: none;
+    border-radius: var(--r-sm);
+    overflow: hidden;
+  }
+  .featured__thumb {
+    border-radius: 0;
+  }
+
+  .featured__content {
+    padding-block: var(--s-3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .featured__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    color: var(--vermillion);
+    margin-block-end: var(--s-5);
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+  .featured__kicker::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .featured__title {
+    font-family: var(--font-ar-display);
+    font-size: clamp(1.75rem, 4vw, var(--t-4xl));
+    line-height: 1.15;
+    font-weight: 500;
+    margin-block-end: var(--s-4);
+  }
+  :global([lang="en"]) .featured__title { font-family: var(--font-en-display); font-style: italic; font-weight: 400; }
+  :global([lang="zh"]) .featured__title { font-family: var(--font-zh); font-weight: 600; }
+
+  .featured__title a {
+    color: var(--ink);
+    text-decoration: none;
+    background-image: linear-gradient(var(--vermillion), var(--vermillion));
+    background-size: 0% 1.5px;
+    background-repeat: no-repeat;
+    background-position: 0 95%;
+    transition: background-size var(--t-slow) var(--ease);
+  }
+  .featured__title a:hover { background-size: 100% 1.5px; }
+
+  .featured__excerpt {
+    font-size: var(--t-base);
+    color: var(--ink-soft);
+    line-height: 1.85;
+    max-width: 42ch;
+    margin-block-end: var(--s-5);
+  }
+
+  .featured__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-5);
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--rule);
+  }
+  .featured__meta > * {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .featured__meta > *::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--vermillion);
+    border-radius: 50%;
+  }
+</style>

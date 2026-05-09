@@ -1,0 +1,78 @@
+---
+import type { Locale } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
+
+interface Heading { depth: number; slug: string; text: string; }
+interface Props { headings: Heading[]; locale: Locale; }
+
+const { headings, locale } = Astro.props;
+const t = useTranslations(locale);
+
+// Only show H2 and H3
+const filtered = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+
+{filtered.length > 0 && (
+  <nav class="toc" aria-label={t('post.tableOfContents')}>
+    <div class="toc__head">{t('post.tableOfContents')}</div>
+    <ul>
+      {filtered.map((h) => (
+        <li class={h.depth === 3 ? 'toc__item--nested' : ''}>
+          <a href={`#${h.slug}`} data-toc-link={h.slug}>{h.text}</a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+)}
+
+<style>
+  .toc {
+    position: sticky;
+    top: var(--s-7);
+    align-self: start;
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+  }
+  .toc__head {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+    margin-block-end: var(--s-3);
+    padding-block-end: var(--s-2);
+    border-block-end: 1px solid var(--rule);
+  }
+  .toc ul { display: grid; gap: var(--s-2); }
+  .toc__item--nested {
+    padding-inline-start: var(--s-3);
+  }
+  .toc a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-inline-start: 2px solid transparent;
+    padding-inline-start: var(--s-2);
+    display: block;
+    transition: all var(--t-fast) var(--ease);
+    line-height: 1.5;
+  }
+  .toc a:hover { color: var(--vermillion); }
+  .toc a.is-active {
+    color: var(--vermillion);
+    border-inline-start-color: var(--vermillion);
+  }
+</style>
+
+<script>
+  const links = document.querySelectorAll<HTMLAnchorElement>('[data-toc-link]');
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          links.forEach((l) => l.classList.toggle('is-active', l.dataset.tocLink === id));
+        }
+      });
+    },
+    { rootMargin: '-20% 0% -70% 0%' }
+  );
+  document.querySelectorAll('h2[id], h3[id]').forEach((h) => observer.observe(h));
+</script>

@@ -1,0 +1,74 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="About — raddah.net"
+  description="I am Raddah Al-Zahrani, passionate about technology especially free and open-source software."
+  locale="en"
+>
+  <article class="about container">
+    <header class="about__head">
+      <div class="about__kicker">About</div>
+      <h1>Raddah Al-Zahrani</h1>
+      <p class="about__role">Passionate · Ambitious · Founder &amp; Contributor</p>
+    </header>
+
+    <div class="about__body">
+      <div class="about__bio">
+        <p>
+          I'm Raddah Al-Zahrani, interested in technology especially free and open-source software from the hardware and software perspective. I have worked in several fields including operational technology and information technology, and have founded several small and large projects.
+        </p>
+        <p>
+          I can describe myself as a passionate and ambitious person with strong skills in the field of free and open-source software. Over the years I have strived for research, development and innovation in this vast field — from founding and participating in projects and ideas, etc.
+        </p>
+        <p>
+          I firmly believe in the importance of acquiring knowledge and working hard without limits. I believe that goodness always rests on the shoulders of those who work hard and diligently, and I strive to spread this belief or philosophy.
+        </p>
+        <p>
+          I spend my time experimenting, learning and teaching many technical aspects and information technology in my small lab, where I work on a variety of fields — from hardware and microcontrollers to developing and operating systems, and using AI and deep learning, blockchain, IoT, and cloud computing technologies.
+        </p>
+        <blockquote>
+          Seek knowledge and do not be lazy, for goodness is never far from the diligent.
+        </blockquote>
+      </div>
+
+      <div class="about__links">
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="https://twitter.com/iRaddah_" target="_blank" rel="me noopener">X / Twitter — @iRaddah_</a></li>
+          <li><a href="https://github.com/Raddah" target="_blank" rel="me noopener">GitHub — Raddah</a></li>
+        </ul>
+
+        <h2>Interests</h2>
+        <ul class="tags">
+          <li>Free &amp; Open Source Software</li>
+          <li>Cloud Computing</li>
+          <li>IoT</li>
+          <li>AI &amp; Deep Learning</li>
+          <li>Blockchain</li>
+          <li>Operational Technology</li>
+          <li>Hardware &amp; Microcontrollers</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</PageLayout>
+
+<style>
+  .about { padding-block: var(--s-9) var(--s-7); max-width: 900px; }
+  .about__head { margin-block-end: var(--s-7); padding-block-end: var(--s-6); border-block-end: 1px solid var(--rule); }
+  .about__kicker { font-family: var(--font-mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.3em; color: var(--vermillion); margin-block-end: var(--s-3); }
+  .about__head h1 { font-family: var(--font-en-display); font-size: var(--t-6xl); font-style: italic; font-weight: 300; line-height: 0.9; margin-block-end: var(--s-3); }
+  .about__role { font-family: var(--font-mono); font-size: var(--t-sm); color: var(--ink-mute); letter-spacing: 0.15em; text-transform: uppercase; }
+  .about__body { display: grid; grid-template-columns: 1fr; gap: var(--s-7); }
+  @media (min-width: 720px) { .about__body { grid-template-columns: 2fr 1fr; } }
+  .about__bio p { font-family: var(--font-en-body); font-size: var(--t-lg); line-height: 1.7; color: var(--ink-soft); margin-block-end: var(--s-5); }
+  .about__bio blockquote { border-inline-start: 3px solid var(--vermillion); padding-inline-start: var(--s-5); font-family: var(--font-en-display); font-size: var(--t-xl); font-style: italic; line-height: 1.5; color: var(--ink); margin-block-start: var(--s-6); }
+  .about__links h2 { font-family: var(--font-mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.2em; color: var(--ink-mute); margin-block: var(--s-5) var(--s-3); padding-block-end: var(--s-2); border-block-end: 1px solid var(--rule); }
+  .about__links ul { display: grid; gap: var(--s-2); }
+  .about__links a { color: var(--ink-soft); font-size: var(--t-sm); text-decoration: none; transition: color var(--t-fast) var(--ease); }
+  .about__links a:hover { color: var(--vermillion); }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .tags li { font-family: var(--font-mono); font-size: var(--t-xs); padding: var(--s-1) var(--s-3); border: 1px solid var(--rule); color: var(--ink-soft); }
+</style>

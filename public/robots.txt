@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://raddah.net/sitemap-index.xml

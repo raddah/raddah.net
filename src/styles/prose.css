@@ -1,0 +1,243 @@
+/* ═══════════════════════════════════════════════════
+   Prose — styles for rendered markdown content
+   Applied via .prose wrapper in BlogLayout
+═══════════════════════════════════════════════════ */
+
+.prose {
+  max-width: var(--measure);
+  margin-inline: auto;
+  font-size: var(--t-lg);
+  line-height: 2;
+  color: var(--ink-soft);
+}
+
+[lang="ar"] .prose { font-family: var(--font-ar-body); }
+[lang="en"] .prose { font-family: var(--font-en-body); }
+[lang="zh"] .prose { font-family: var(--font-zh); }
+
+/* Paragraphs */
+.prose > p {
+  margin-block-end: var(--s-5);
+}
+
+/* First paragraph drop cap */
+.prose > p:first-of-type::first-letter {
+  font-family: var(--font-ar-display);
+  font-size: 4em;
+  float: inline-start;
+  line-height: 0.9;
+  margin-inline-end: var(--s-3);
+  margin-block-start: var(--s-1);
+  color: var(--vermillion);
+  font-weight: 600;
+}
+[lang="en"] .prose > p:first-of-type::first-letter {
+  font-family: var(--font-en-display);
+}
+[lang="zh"] .prose > p:first-of-type::first-letter {
+  font-family: var(--font-zh);
+  font-size: 3em;
+}
+
+/* Headings */
+.prose h2 {
+  font-family: var(--font-ar-display);
+  font-size: var(--t-2xl);
+  line-height: 1.3;
+  font-weight: 500;
+  color: var(--ink);
+  margin-block: var(--s-7) var(--s-4);
+  padding-block-end: var(--s-2);
+  border-block-end: 1px solid var(--rule);
+}
+[lang="en"] .prose h2 { font-family: var(--font-en-display); }
+[lang="zh"] .prose h2 { font-family: var(--font-zh); }
+
+.prose h3 {
+  font-family: var(--font-ar-display);
+  font-size: var(--t-xl);
+  line-height: 1.4;
+  font-weight: 500;
+  color: var(--ink);
+  margin-block: var(--s-6) var(--s-3);
+}
+[lang="en"] .prose h3 { font-family: var(--font-en-display); }
+[lang="zh"] .prose h3 { font-family: var(--font-zh); }
+
+.prose h4 {
+  font-family: var(--font-mono);
+  font-size: var(--t-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--vermillion);
+  margin-block: var(--s-5) var(--s-2);
+  font-weight: 500;
+}
+
+/* Inline links */
+.prose a {
+  color: var(--ink);
+  background-image: linear-gradient(var(--vermillion), var(--vermillion));
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 95%;
+  transition: background-size var(--t-base) var(--ease);
+  padding-block-end: 1px;
+}
+.prose a:hover {
+  background-size: 100% 100%;
+  color: var(--paper);
+  background-color: var(--vermillion);
+  background-image: none;
+}
+
+/* Strong, emphasis */
+.prose strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.prose em {
+  font-style: italic;
+  color: var(--ink);
+}
+
+/* Lists */
+.prose ul, .prose ol {
+  margin-block-end: var(--s-5);
+  padding-inline-start: var(--s-5);
+}
+.prose ul li, .prose ol li {
+  margin-block-end: var(--s-2);
+  position: relative;
+  list-style: none;
+}
+.prose ul li::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: calc(var(--s-4) * -1);
+  top: 0.85em;
+  width: 6px;
+  height: 1px;
+  background: var(--vermillion);
+}
+.prose ol {
+  counter-reset: prose-counter;
+}
+.prose ol li {
+  counter-increment: prose-counter;
+}
+.prose ol li::before {
+  content: counter(prose-counter) '.';
+  position: absolute;
+  inset-inline-start: calc(var(--s-5) * -1);
+  color: var(--vermillion);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
+
+/* Blockquotes */
+.prose blockquote {
+  border-inline-start: 3px solid var(--vermillion);
+  padding-inline-start: var(--s-5);
+  margin-block: var(--s-6);
+  font-family: var(--font-ar-display);
+  font-size: var(--t-xl);
+  line-height: 1.5;
+  color: var(--ink);
+  font-weight: 400;
+}
+[lang="en"] .prose blockquote { font-family: var(--font-en-display); font-style: italic; }
+[lang="zh"] .prose blockquote { font-family: var(--font-zh); }
+
+/* Inline code */
+.prose code:not(pre code) {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--paper-deep);
+  padding: 2px var(--s-2);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  border-radius: var(--r-sm);
+}
+
+/* Code blocks (rehype-pretty-code wrapper) */
+.prose pre {
+  background: var(--ink) !important;
+  color: var(--paper);
+  padding: var(--s-5);
+  border-radius: var(--r-sm);
+  overflow-x: auto;
+  margin-block: var(--s-5);
+  font-family: var(--font-mono);
+  font-size: var(--t-sm);
+  line-height: 1.7;
+  direction: ltr;
+  text-align: start;
+  border: 1px solid var(--rule-strong);
+}
+.prose pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* Inline figure with caption */
+.prose figure {
+  margin-block: var(--s-6);
+}
+.prose figure img {
+  width: 100%;
+  border: 1px solid var(--rule);
+}
+.prose figcaption {
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  text-align: center;
+  margin-block-start: var(--s-3);
+  padding-block-start: var(--s-2);
+  border-block-start: 1px solid var(--rule);
+}
+
+/* Horizontal rule */
+.prose hr {
+  border: none;
+  text-align: center;
+  margin-block: var(--s-7);
+  color: var(--vermillion);
+  font-family: var(--font-ar-display);
+  font-size: var(--t-xl);
+  letter-spacing: 0.5em;
+  opacity: 0.6;
+}
+.prose hr::before {
+  content: '۞ ─── ۞';
+}
+
+/* Tables */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-block: var(--s-5);
+  font-size: var(--t-sm);
+}
+.prose th {
+  text-align: start;
+  font-family: var(--font-mono);
+  font-size: var(--t-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-mute);
+  padding: var(--s-3);
+  border-block-end: 2px solid var(--ink);
+  font-weight: 500;
+}
+.prose td {
+  padding: var(--s-3);
+  border-block-end: 1px solid var(--rule);
+  color: var(--ink-soft);
+}

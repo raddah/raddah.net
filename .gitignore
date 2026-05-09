@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+dist/
+.astro/
+.env
+.env.production
+.DS_Store
+*.log
+.vscode/
+.idea/
+.wrangler/
+playwright-report/
+.cache/
+*.tmp

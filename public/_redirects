@@ -1,0 +1,16 @@
+# Hugo → Astro URL redirects (preserving your old URLs)
+/back-again/               /ar/blog/back-again/      301
+/en/back-again/            /en/blog/back-again/      301
+/projects/                 /ar/projects/             301
+/about/                    /ar/about/                301
+/en/about/                 /en/about/                301
+/en/projects/              /en/projects/             301
+/search/                   /ar/                      301
+/en/search/                /en/                      301
+
+# Legacy RSS
+/index.xml                 /ar/rss.xml               301
+/en/index.xml              /en/rss.xml               301
+
+# Root → Arabic
+/                          /ar/                      301

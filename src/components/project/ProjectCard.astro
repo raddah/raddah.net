@@ -1,0 +1,165 @@
+---
+import PostThumbnail from '@/components/ui/PostThumbnail.astro';
+import type { Locale } from '@/i18n';
+
+interface Props {
+  name: string;
+  nameEn?: string;
+  desc: string;
+  url?: string;
+  repo?: string;
+  image?: string;
+  tags: string[];
+  role: string;
+  status: string;
+  locale: Locale;
+}
+
+const { name, nameEn, desc, url, repo, image, tags, role, status, locale } = Astro.props;
+---
+
+<article class="proj-card">
+  <a href={url || repo || '#'} target="_blank" rel="noopener" class="proj-card__img-link">
+    <PostThumbnail src={image} alt={name} locale={locale} ratio="2/1" />
+  </a>
+
+  <div class="proj-card__body">
+    <div class="proj-card__head">
+      <div>
+        <h2 class="proj-card__name">{name}</h2>
+        {nameEn && nameEn !== name && <span class="proj-card__name-en">{nameEn}</span>}
+      </div>
+      <div class="proj-card__badges">
+        <span class="proj-card__role">{role}</span>
+        <span class="proj-card__status">{status}</span>
+      </div>
+    </div>
+    <p class="proj-card__desc">{desc}</p>
+    <div class="proj-card__tags">
+      {tags.map((tag) => <span class="proj-tag">{tag}</span>)}
+    </div>
+    <div class="proj-card__links">
+      {url && <a href={url} target="_blank" rel="noopener">
+        {locale === 'ar' ? 'زيارة الموقع →' : locale === 'zh' ? '访问网站 →' : 'Visit site →'}
+      </a>}
+      {repo && <a href={repo} target="_blank" rel="noopener">
+        {locale === 'ar' ? 'المستودع →' : locale === 'zh' ? '代码仓库 →' : 'Repository →'}
+      </a>}
+    </div>
+  </div>
+</article>
+
+<style>
+  .proj-card {
+    border: 1px solid var(--rule);
+    overflow: hidden;
+    transition: border-color var(--t-base) var(--ease);
+    display: flex;
+    flex-direction: column;
+  }
+  .proj-card:hover { border-color: var(--ink); }
+
+  .proj-card__img-link {
+    display: block;
+    overflow: hidden;
+  }
+
+  .proj-card__body {
+    padding: var(--s-6);
+    display: grid;
+    gap: var(--s-4);
+    flex: 1;
+  }
+  .proj-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+  }
+  .proj-card__name {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-2xl);
+    font-weight: 500;
+  }
+  :global([lang="en"]) .proj-card__name {
+    font-family: var(--font-en-display);
+    font-style: italic;
+    font-weight: 400;
+  }
+  :global([lang="zh"]) .proj-card__name {
+    font-family: var(--font-zh);
+    font-weight: 600;
+  }
+  .proj-card__name-en {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-block-start: var(--s-1);
+  }
+  .proj-card__badges {
+    display: flex;
+    gap: var(--s-2);
+    flex-shrink: 0;
+  }
+  .proj-card__role {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--ink-mute);
+    border: 1px solid var(--rule);
+    padding: var(--s-1) var(--s-3);
+    border-radius: var(--r-full);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .proj-card__status {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--vermillion);
+    border: 1px solid var(--vermillion);
+    padding: var(--s-1) var(--s-3);
+    border-radius: var(--r-full);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .proj-card__desc {
+    font-family: var(--font-ar-body);
+    font-size: var(--t-base);
+    color: var(--ink-soft);
+    line-height: 1.85;
+  }
+  :global([lang="en"]) .proj-card__desc { font-family: var(--font-en-body); line-height: 1.75; }
+  :global([lang="zh"]) .proj-card__desc { font-family: var(--font-zh); }
+  .proj-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+  .proj-tag {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    padding: var(--s-1) var(--s-2);
+    background: var(--paper-deep);
+    border: 1px solid var(--rule);
+    color: var(--ink-mute);
+  }
+  .proj-card__links {
+    display: flex;
+    gap: var(--s-4);
+    padding-block-start: var(--s-3);
+    border-block-start: 1px solid var(--rule);
+    flex-wrap: wrap;
+  }
+  .proj-card__links a {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color var(--t-fast) var(--ease);
+  }
+  .proj-card__links a:hover { color: var(--vermillion); }
+</style>

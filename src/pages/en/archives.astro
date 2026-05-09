@@ -1,0 +1,120 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import { getPostsByLocale, getSlugFromId } from '@/utils/content';
+import { formatDate } from '@/utils/date';
+
+const locale = 'en';
+const posts = await getPostsByLocale(locale);
+
+const byYear: Record<string, typeof posts> = {};
+posts.forEach((post) => {
+  const year = post.data.publishDate.getFullYear().toString();
+  if (!byYear[year]) byYear[year] = [];
+  byYear[year].push(post);
+});
+
+const years = Object.keys(byYear).sort((a, b) => Number(b) - Number(a));
+---
+
+<PageLayout
+  title="Archives — raddah.net"
+  description="All articles organized by year"
+  locale={locale}
+>
+  <div class="archives container">
+    <header class="archives__head">
+      <h1>Archives</h1>
+      <p class="archives__count">{posts.length} articles published</p>
+    </header>
+
+    {years.map((year) => (
+      <section class="archives__year">
+        <h2 class="archives__year-title">
+          <span>{year}</span>
+          <span class="archives__year-count">{byYear[year].length}</span>
+        </h2>
+        <ol class="archives__list">
+          {byYear[year].map((post) => {
+            const slug = getSlugFromId(post.id);
+            return (
+              <li class="archives__item">
+                <time datetime={post.data.publishDate.toISOString()}>
+                  {formatDate(post.data.publishDate, locale)}
+                </time>
+                <a href={`/${locale}/blog/${slug}/`}>{post.data.title}</a>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
+    ))}
+  </div>
+</PageLayout>
+
+<style>
+  .archives { padding-block: var(--s-9) var(--s-7); }
+  .archives__head {
+    margin-block-end: var(--s-7);
+    padding-block-end: var(--s-6);
+    border-block-end: 1px solid var(--ink);
+  }
+  .archives__head h1 {
+    font-family: var(--font-en-display);
+    font-size: var(--t-5xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1;
+  }
+  .archives__count {
+    font-family: var(--font-mono);
+    font-size: var(--t-sm);
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-block-start: var(--s-3);
+  }
+
+  .archives__year { margin-block-end: var(--s-7); }
+  .archives__year-title {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    font-family: var(--font-en-display);
+    font-size: var(--t-3xl);
+    font-style: italic;
+    font-weight: 400;
+    margin-block-end: var(--s-4);
+    padding-block-end: var(--s-3);
+    border-block-end: 1px solid var(--rule);
+  }
+  .archives__year-count {
+    font-family: var(--font-mono);
+    font-size: var(--t-sm);
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+  }
+
+  .archives__list { display: grid; gap: var(--s-3); }
+  .archives__item {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-4);
+    font-size: var(--t-base);
+  }
+  .archives__item time {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    min-width: 7rem;
+  }
+  .archives__item a {
+    color: var(--ink);
+    text-decoration: none;
+    font-family: var(--font-en-body);
+    line-height: 1.6;
+    transition: color var(--t-fast) var(--ease);
+  }
+  .archives__item a:hover { color: var(--vermillion); }
+</style>

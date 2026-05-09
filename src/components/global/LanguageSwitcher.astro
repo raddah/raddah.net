@@ -1,0 +1,54 @@
+---
+import type { Locale } from '@/i18n';
+import { locales, localeConfig } from '@/i18n';
+
+interface Props { locale: Locale; }
+const { locale: current } = Astro.props;
+
+// Compute parallel paths for each locale (preserve current page)
+const path = Astro.url.pathname.replace(/^\/[a-z]{2}/, '') || '/';
+
+function localizedHref(target: Locale): string {
+  return `/${target}${path}`;
+}
+---
+
+<div class="lang-switch" role="group" aria-label="Language">
+  {locales.map((lc) => (
+    <a
+      href={localizedHref(lc)}
+      class={lc === current ? 'is-active' : ''}
+      aria-label={localeConfig[lc].name}
+      aria-current={lc === current ? 'true' : 'false'}
+    >{localeConfig[lc].shortLabel}</a>
+  ))}
+</div>
+
+<style>
+  .lang-switch {
+    display: flex;
+    border: 1px solid var(--rule);
+    border-radius: var(--r-full);
+    padding: 2px;
+    gap: 2px;
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+  }
+  .lang-switch a {
+    padding: var(--s-1) var(--s-3);
+    color: var(--ink-mute);
+    text-decoration: none;
+    border-radius: var(--r-full);
+    transition: all var(--t-fast) var(--ease);
+    display: grid;
+    place-items: center;
+    min-width: 28px;
+  }
+  .lang-switch a:hover {
+    color: var(--ink);
+  }
+  .lang-switch a.is-active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+</style>

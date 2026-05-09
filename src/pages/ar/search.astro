@@ -1,0 +1,157 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+
+const locale = 'ar';
+---
+
+<PageLayout
+  title="بحث — raddah.net"
+  description="ابحث في جميع المقالات"
+  locale={locale}
+>
+  <div class="search-page container">
+    <header class="search-page__head">
+      <h1>بحث</h1>
+      <p class="search-page__hint">اكتب للبحث في جميع المقالات...</p>
+    </header>
+    <div id="pagefind-search">
+      <div class="search-page__loading">
+        <div class="search-page__spinner"></div>
+        <span>جاري تحميل محرك البحث...</span>
+      </div>
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .search-page { padding-block: var(--s-9) var(--s-7); max-width: 800px; }
+  .search-page__head {
+    margin-block-end: var(--s-7);
+    padding-block-end: var(--s-6);
+    border-block-end: 1px solid var(--ink);
+  }
+  .search-page__head h1 {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-5xl);
+    font-weight: 500;
+    line-height: 1;
+  }
+  .search-page__hint {
+    font-family: var(--font-mono);
+    font-size: var(--t-sm);
+    color: var(--ink-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-block-start: var(--s-3);
+  }
+  .search-page__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3);
+    padding: var(--s-9);
+    color: var(--ink-mute);
+    font-family: var(--font-ar-body);
+    font-style: italic;
+  }
+  .search-page__spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--rule);
+    border-top-color: var(--vermillion);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  :global(#pagefind-search) {
+    --pagefind-ui-primary: var(--vermillion);
+    --pagefind-ui-text: var(--ink);
+    --pagefind-ui-background: var(--paper);
+    --pagefind-ui-border: var(--rule);
+    --pagefind-ui-tag: var(--paper-deep);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 2px;
+    --pagefind-ui-image-border-radius: 2px;
+    --pagefind-ui-image-box-ratio: 3 / 2;
+    --pagefind-ui-font: var(--font-ar-body);
+  }
+  :global(#pagefind-search .pagefind-ui__search-input) {
+    font-size: var(--t-xl);
+    padding: var(--s-4) var(--s-5);
+  }
+</style>
+
+<script>
+  (async function initSearch() {
+    const mount = document.getElementById('pagefind-search');
+    if (!mount) return;
+    
+    try {
+      const module = await import(/* @vite-ignore */ '/pagefind/pagefind-ui.js');
+      const PagefindUI = module.default;
+      
+      mount.innerHTML = '';
+      
+      new PagefindUI({
+        element: '#pagefind-search',
+        showSubResults: true,
+        showImages: true,
+        resetStyles: false,
+        debounceTimeoutMs: 150,
+        translations: {
+          placeholder: 'ابحث في المقالات...',
+          clear_search: 'مسح',
+          load_more: 'تحميل المزيد',
+          search_label: 'بحث',
+          zero_results: 'لا توجد نتائج',
+          many_results: 'نتيجة',
+          one_result: 'نتيجة',
+          searching: 'جاري البحث...',
+        }
+      });
+      
+      // Auto-focus the search input
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const input = mount.querySelector('.pagefind-ui__search-input') as HTMLInputElement | null;
+          input?.focus();
+        }, 100);
+      });
+    } catch (err) {
+      console.error('[Search] Initialization failed:', err);
+      mount.innerHTML = `
+        <div class="search-page__error">
+          <p>فهرس البحث غير متوفر حالياً.</p>
+          <p class="search-page__error-hint">قم بتشغيل <code>npm run build</code> لإنشاء الفهرس.</p>
+        </div>
+      `;
+    }
+  })();
+</script>
+
+<style>
+  .search-page__error {
+    text-align: center;
+    padding: var(--s-9);
+    color: var(--ink-mute);
+  }
+  .search-page__error p:first-child {
+    font-size: var(--t-lg);
+    font-style: italic;
+    margin-block-end: var(--s-3);
+  }
+  .search-page__error-hint {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    opacity: 0.7;
+  }
+  .search-page__error code {
+    background: var(--paper-deep);
+    padding: 0.2rem 0.4rem;
+    border-radius: var(--r-sm);
+    border: 1px solid var(--rule);
+  }
+</style>

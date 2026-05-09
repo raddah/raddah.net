@@ -1,0 +1,74 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+---
+
+<PageLayout
+  title="关于 — raddah.net"
+  description="我是 Raddah Al-Zahrani，热爱技术，尤其是自由及开源软件。"
+  locale="zh"
+>
+  <article class="about container">
+    <header class="about__head">
+      <div class="about__kicker">关于</div>
+      <h1>Raddah Al-Zahrani</h1>
+      <p class="about__role">热情 · 进取 · 创始人 &amp; 贡献者</p>
+    </header>
+
+    <div class="about__body">
+      <div class="about__bio">
+        <p>
+          我是 Raddah Al-Zahrani，对技术充满热情，尤其关注自由及开源软件的硬件与软件层面。我曾在运营技术和信息技术等多个领域工作，并创立了若干大大小小的项目。
+        </p>
+        <p>
+          我可以将自己描述为一个充满热情与进取心的人，在自由及开源软件领域具备扎实的能力。多年来，我致力于这一广阔领域中的研究、开发与创新——从创立项目、参与贡献到推动各种想法的落地。
+        </p>
+        <p>
+          我坚信获取知识与勤奋工作的重要性。我相信善良永远栖息在努力与认真的人肩上，并致力于传播这一信念与哲学。
+        </p>
+        <p>
+          我在自己的小型实验室里度过大量时间，进行实验、学习和教学，涉及各类技术领域——从硬件和微控制器，到系统开发与运维，再到 AI 与深度学习、区块链、物联网以及云计算技术。
+        </p>
+        <blockquote>
+          求知莫懈怠，善报不远离勤者。
+        </blockquote>
+      </div>
+
+      <div class="about__links">
+        <h2>联系方式</h2>
+        <ul>
+          <li><a href="https://twitter.com/iRaddah_" target="_blank" rel="me noopener">X / Twitter — @iRaddah_</a></li>
+          <li><a href="https://github.com/Raddah" target="_blank" rel="me noopener">GitHub — Raddah</a></li>
+        </ul>
+
+        <h2>兴趣领域</h2>
+        <ul class="tags">
+          <li>自由及开源软件</li>
+          <li>云计算</li>
+          <li>物联网</li>
+          <li>AI 与深度学习</li>
+          <li>区块链</li>
+          <li>运营技术</li>
+          <li>硬件与微控制器</li>
+        </ul>
+      </div>
+    </div>
+  </article>
+</PageLayout>
+
+<style>
+  .about { padding-block: var(--s-9) var(--s-7); max-width: 900px; }
+  .about__head { margin-block-end: var(--s-7); padding-block-end: var(--s-6); border-block-end: 1px solid var(--rule); }
+  .about__kicker { font-family: var(--font-mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.3em; color: var(--vermillion); margin-block-end: var(--s-3); }
+  .about__head h1 { font-family: var(--font-zh); font-size: var(--t-6xl); font-weight: 600; line-height: 0.9; margin-block-end: var(--s-3); }
+  .about__role { font-family: var(--font-mono); font-size: var(--t-sm); color: var(--ink-mute); letter-spacing: 0.15em; text-transform: uppercase; }
+  .about__body { display: grid; grid-template-columns: 1fr; gap: var(--s-7); }
+  @media (min-width: 720px) { .about__body { grid-template-columns: 2fr 1fr; } }
+  .about__bio p { font-family: var(--font-zh); font-size: var(--t-lg); line-height: 1.85; color: var(--ink-soft); margin-block-end: var(--s-5); }
+  .about__bio blockquote { border-inline-start: 3px solid var(--vermillion); padding-inline-start: var(--s-5); font-family: var(--font-zh); font-size: var(--t-xl); line-height: 1.6; color: var(--ink); margin-block-start: var(--s-6); }
+  .about__links h2 { font-family: var(--font-mono); font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.2em; color: var(--ink-mute); margin-block: var(--s-5) var(--s-3); padding-block-end: var(--s-2); border-block-end: 1px solid var(--rule); }
+  .about__links ul { display: grid; gap: var(--s-2); }
+  .about__links a { color: var(--ink-soft); font-size: var(--t-sm); text-decoration: none; transition: color var(--t-fast) var(--ease); }
+  .about__links a:hover { color: var(--vermillion); }
+  .tags { display: flex; flex-wrap: wrap; gap: var(--s-2); }
+  .tags li { font-family: var(--font-zh); font-size: var(--t-xs); padding: var(--s-1) var(--s-3); border: 1px solid var(--rule); color: var(--ink-soft); }
+</style>

@@ -1,0 +1,43 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+const locale = 'ar';
+---
+
+<PageLayout title="٤٠٤ — الصفحة غير موجودة" description="هذه الصفحة غير موجودة" locale={locale}>
+  <div class="not-found container">
+    <div class="not-found__num">٤٠٤</div>
+    <h1>الصفحة غير موجودة</h1>
+    <p>ربّما نُقلت هذه الصفحة أو حُذفت.</p>
+    <a href="/ar/" class="btn btn--solid">العودة للرئيسية</a>
+  </div>
+</PageLayout>
+
+<style>
+  .not-found {
+    min-height: 60vh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    gap: var(--s-5);
+    padding-block: var(--s-9);
+  }
+  .not-found__num {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-7xl);
+    color: var(--vermillion);
+    opacity: 0.3;
+    line-height: 1;
+  }
+  .not-found h1 {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-3xl);
+    font-weight: 500;
+  }
+  .not-found p {
+    font-family: var(--font-ar-body);
+    color: var(--ink-mute);
+    font-size: var(--t-lg);
+  }
+  .btn { display: inline-flex; align-items: center; gap: var(--s-2); font-family: var(--font-ar-display); font-size: var(--t-sm); padding: var(--s-3) var(--s-5); border: 1px solid var(--ink); background: var(--ink); color: var(--paper); text-decoration: none; transition: all var(--t-base) var(--ease); }
+  .btn:hover { background: var(--vermillion); border-color: var(--vermillion); }
+</style>

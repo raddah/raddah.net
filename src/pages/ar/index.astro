@@ -1,0 +1,24 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import Hero from '@/components/blog/Hero.astro';
+import FeaturedPost from '@/components/blog/FeaturedPost.astro';
+import DiwanList from '@/components/blog/DiwanList.astro';
+import SearchDialog from '@/components/global/SearchDialog.astro';
+import { getFeaturedPost, getRecentPosts } from '@/utils/content';
+
+const locale = 'ar';
+const featured = await getFeaturedPost(locale);
+const recent = await getRecentPosts(locale, featured?.id, 5);
+const allCount = (await getRecentPosts(locale, undefined, 999)).length;
+---
+
+<PageLayout
+  title="raddah.net — ديوان رَدّه"
+  description="مدوّنة شخصية في التقنية والبرمجيات المفتوحة المصدر والتأمل"
+  locale={locale}
+>
+  <SearchDialog locale={locale} />
+  <Hero locale={locale} postCount={allCount} />
+  {featured && <FeaturedPost post={featured} locale={locale} />}
+  {recent.length > 0 && <DiwanList posts={recent} locale={locale} />}
+</PageLayout>

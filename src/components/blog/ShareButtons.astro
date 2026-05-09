@@ -1,0 +1,92 @@
+---
+import type { Locale } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props { title: string; locale: Locale; }
+const { title, locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<aside class="share" aria-label={t('post.share')}>
+  <div class="share__head">{t('post.share')}</div>
+  <div class="share__stack">
+    <button class="share__btn" data-action="copy" type="button">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="9" y="9" width="13" height="13" rx="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      <span class="share__label-copy">{t('post.shareCopy')}</span>
+    </button>
+    <a class="share__btn" data-action="twitter" href="#" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+      X
+    </a>
+    <a class="share__btn" data-action="linkedin" href="#" target="_blank" rel="noopener">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452z"/>
+      </svg>
+      LinkedIn
+    </a>
+  </div>
+</aside>
+
+<style>
+  .share {
+    position: sticky;
+    top: var(--s-7);
+    align-self: start;
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+  }
+  .share__head {
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-mute);
+    margin-block-end: var(--s-3);
+    padding-block-end: var(--s-2);
+    border-block-end: 1px solid var(--rule);
+  }
+  .share__stack { display: grid; gap: var(--s-2); }
+  .share__btn {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    padding: var(--s-2) var(--s-3);
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    cursor: pointer;
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: all var(--t-fast) var(--ease);
+    font-family: inherit;
+    font-size: inherit;
+    text-align: start;
+  }
+  .share__btn:hover { border-color: var(--ink); color: var(--ink); }
+</style>
+
+<script define:vars={{ title }}>
+  const url = window.location.href;
+
+  document.querySelector('[data-action="copy"]')?.addEventListener('click', async (e) => {
+    const btn = e.currentTarget;
+    const label = btn.querySelector('.share__label-copy');
+    try {
+      await navigator.clipboard.writeText(url);
+      const original = label.textContent;
+      label.textContent = '✓';
+      setTimeout(() => { label.textContent = original; }, 1500);
+    } catch {}
+  });
+
+  const twitter = document.querySelector('[data-action="twitter"]');
+  if (twitter) {
+    twitter.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`;
+  }
+  const linkedin = document.querySelector('[data-action="linkedin"]');
+  if (linkedin) {
+    linkedin.href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+  }
+</script>

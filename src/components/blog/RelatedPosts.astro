@@ -1,0 +1,115 @@
+---
+import type { Locale } from '@/i18n';
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations } from '@/i18n/ui';
+import { formatDate } from '@/utils/date';
+import { getSlugFromId } from '@/utils/content';
+import PostThumbnail from '@/components/ui/PostThumbnail.astro';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+  locale: Locale;
+}
+const { posts, locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+{posts.length > 0 && (
+  <section class="related container">
+    <h2 class="related__title">{t('post.related')}</h2>
+    <div class="related__grid">
+      {posts.map((post, i) => {
+        const slug = getSlugFromId(post.id);
+        return (
+          <a href={`/${locale}/blog/${slug}/`} class="related__card">
+            <PostThumbnail
+              src={post.data.heroImage}
+              alt={post.data.heroImageAlt ?? post.data.title}
+              locale={locale}
+              index={i}
+              ratio="16/9"
+              class="related__thumb"
+            />
+            <span class="related__cat">{post.data.category}</span>
+            <h3 class="related__name">{post.data.title}</h3>
+            <time class="related__date" datetime={post.data.publishDate.toISOString()}>
+              {formatDate(post.data.publishDate, locale)}
+            </time>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+)}
+
+<style>
+  .related {
+    padding-block: var(--s-7);
+    border-block-start: 1px solid var(--rule);
+    margin-block-start: var(--s-7);
+  }
+  .related__title {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-xl);
+    font-weight: 500;
+    margin-block-end: var(--s-5);
+    padding-block-end: var(--s-3);
+    border-block-end: 1px solid var(--ink);
+  }
+  :global([lang="en"]) .related__title { font-family: var(--font-en-display); font-style: italic; }
+  :global([lang="zh"]) .related__title { font-family: var(--font-zh); }
+
+  .related__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--s-4);
+  }
+  .related__card {
+    border: 1px solid var(--rule);
+    text-decoration: none;
+    color: var(--ink);
+    display: grid;
+    gap: var(--s-2);
+    transition: border-color var(--t-base) var(--ease);
+    align-content: start;
+    overflow: hidden;
+    border-radius: var(--r-sm);
+  }
+  .related__card:hover { border-color: var(--ink); }
+
+  .related__thumb {
+    border-radius: 0;
+  }
+
+  .related__cat,
+  .related__name,
+  .related__date {
+    padding-inline: var(--s-5);
+  }
+  .related__cat {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--vermillion);
+    margin-block-start: var(--s-4);
+  }
+  .related__name {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-lg);
+    font-weight: 500;
+    line-height: 1.4;
+    padding-block-end: var(--s-4);
+  }
+  :global([lang="en"]) .related__name { font-family: var(--font-en-display); font-style: italic; font-weight: 400; }
+  :global([lang="zh"]) .related__name { font-family: var(--font-zh); font-weight: 600; }
+  .related__date {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    padding-block-end: var(--s-5);
+    border-block-start: 1px solid var(--rule);
+    padding-block-start: var(--s-3);
+  }
+</style>

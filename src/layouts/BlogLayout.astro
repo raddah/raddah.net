@@ -1,0 +1,79 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '@/components/global/Header.astro';
+import Footer from '@/components/global/Footer.astro';
+import PostHeader from '@/components/blog/PostHeader.astro';
+import ReadingProgress from '@/components/blog/ReadingProgress.astro';
+import TableOfContents from '@/components/blog/TableOfContents.astro';
+import ShareButtons from '@/components/blog/ShareButtons.astro';
+import RelatedPosts from '@/components/blog/RelatedPosts.astro';
+import '@/styles/prose.css';
+import type { Locale } from '@/i18n';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  locale: Locale;
+  headings: { depth: number; slug: string; text: string }[];
+  related: CollectionEntry<'blog'>[];
+  readingMinutes: number;
+}
+
+const { post, locale, headings, related, readingMinutes } = Astro.props;
+const { data } = post;
+---
+
+<BaseLayout
+  title={`${data.title} — raddah.net`}
+  description={data.description}
+  locale={locale}
+  image={data.heroImage}
+>
+  <ReadingProgress />
+  <Header locale={locale} />
+
+  <main id="main">
+    <article>
+      <PostHeader post={post} locale={locale} readingMinutes={readingMinutes} />
+
+      <div class="post-body container">
+        <aside class="post-aside-start">
+          <TableOfContents headings={headings} locale={locale} />
+        </aside>
+
+        <div class="prose" data-pagefind-body>
+          <slot />
+        </div>
+
+        <aside class="post-aside-end">
+          <ShareButtons title={data.title} locale={locale} />
+        </aside>
+      </div>
+
+      {related.length > 0 && <RelatedPosts posts={related} locale={locale} />}
+    </article>
+  </main>
+
+  <Footer locale={locale} />
+</BaseLayout>
+
+<style>
+  .post-body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-6);
+    padding-block: var(--s-7);
+  }
+  @media (min-width: 1024px) {
+    .post-body {
+      grid-template-columns: 200px 1fr 200px;
+      gap: var(--s-7);
+    }
+  }
+  .post-aside-start, .post-aside-end {
+    display: none;
+  }
+  @media (min-width: 1024px) {
+    .post-aside-start, .post-aside-end { display: block; }
+  }
+</style>

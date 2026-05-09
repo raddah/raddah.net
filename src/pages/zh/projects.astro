@@ -1,0 +1,53 @@
+---
+import PageLayout from '@/layouts/PageLayout.astro';
+import ProjectCard from '@/components/project/ProjectCard.astro';
+
+const locale = 'zh';
+const projects = [
+  {
+    name: 'AOSUS 社区',
+    nameEn: 'AOSUS Community',
+    desc: 'AOSUS 是最大的阿拉伯语自由及开源软件社区，致力于推广自由软件并培育贡献文化。我参与联合创立了这个社区，与来自世界各地的阿拉伯创作者共同构建了这一平台。',
+    url: 'https://aosus.org',
+    image: '/images/projects/aosus.jpg',
+    tags: ['开源', '社区', '阿拉伯语', '自由软件'],
+    role: '联合创始人',
+    status: '活跃',
+  },
+  {
+    name: 'raddah.net',
+    nameEn: 'raddah.net',
+    desc: '我的个人博客——最初使用 Hugo 构建，现已用 Astro 5 重建，支持三语（阿拉伯语、英语、中文），部署在 Cloudflare Pages 上。',
+    url: 'https://raddah.net',
+    repo: 'https://github.com/raddah/raddah.net',
+    image: '/images/projects/raddah-logo.svg',
+    tags: ['Astro', 'Hugo', 'Cloudflare', 'TypeScript', 'i18n'],
+    role: '所有者',
+    status: '重建中',
+  },
+];
+---
+
+<PageLayout title="项目 — raddah.net" description="我多年来创立或参与贡献的开源项目与作品。" locale={locale}>
+  <section class="projects container">
+    <header class="projects__head">
+      <h1>项目</h1>
+      <p class="projects__intro">我多年来创立或参与贡献的开源项目与作品。</p>
+    </header>
+
+    <div class="projects__grid">
+      {projects.map((p) => (
+        <ProjectCard {...p} locale={locale} />
+      ))}
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .projects { padding-block: var(--s-9) var(--s-7); }
+  .projects__head { margin-block-end: var(--s-7); padding-block-end: var(--s-5); border-block-end: 1px solid var(--ink); }
+  .projects__head h1 { font-family: var(--font-zh); font-size: var(--t-5xl); font-weight: 600; line-height: 1; }
+  .projects__intro { margin-block-start: var(--s-4); font-family: var(--font-zh); font-size: var(--t-lg); color: var(--ink-soft); line-height: 1.85; }
+  .projects__grid { display: grid; grid-template-columns: 1fr; gap: var(--s-6); }
+  @media (min-width: 720px) { .projects__grid { grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); } }
+</style>

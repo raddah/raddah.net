@@ -1,0 +1,135 @@
+---
+/**
+ * Logo — the dual-mark identity system.
+ * - 'cursor': animated terminal-style logo for web headers
+ * - 'seal': static hexagram seal for favicons, print, OG cards
+ * - 'wordmark': mark + raddah text
+ */
+
+interface Props {
+  variant?: 'cursor' | 'seal' | 'wordmark';
+  size?: 'xs' | 'sm' | 'md' | 'lg';
+  animated?: boolean;
+  class?: string;
+}
+
+const {
+  variant = 'cursor',
+  size = 'md',
+  animated = true,
+  class: className = '',
+} = Astro.props;
+---
+
+{variant === 'cursor' && (
+  <span class={`logo logo--cursor logo--${size} ${className}`} aria-label="Raddah">
+    <span class="logo__glyph">ر</span>
+    {animated && <span class="logo__caret" aria-hidden="true"></span>}
+  </span>
+)}
+
+{variant === 'seal' && (
+  <svg
+    class={`logo logo--seal logo--${size} ${className}`}
+    viewBox="0 0 120 120"
+    aria-label="Raddah"
+    role="img"
+  >
+    <polygon
+      points="60,8 108,34 108,86 60,112 12,86 12,34"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.5"
+    />
+    <text
+      x="60"
+      y="78"
+      text-anchor="middle"
+      font-family="Reem Kufi"
+      font-size="48"
+      font-weight="700"
+      fill="currentColor"
+    >ر</text>
+    <circle cx="100" cy="22" r="6" fill="var(--vermillion)" />
+  </svg>
+)}
+
+{variant === 'wordmark' && (
+  <span class={`logo logo--wordmark logo--${size} ${className}`} aria-label="raddah.net">
+    <svg class="logo__seal-mini" viewBox="0 0 120 120" aria-hidden="true">
+      <polygon
+        points="60,8 108,34 108,86 60,112 12,86 12,34"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="3"
+      />
+      <text
+        x="60"
+        y="80"
+        text-anchor="middle"
+        font-family="Reem Kufi"
+        font-size="52"
+        font-weight="700"
+        fill="currentColor"
+      >ر</text>
+      <circle cx="100" cy="22" r="7" fill="var(--vermillion)" />
+    </svg>
+    <span class="logo__text">raddah</span>
+  </span>
+)}
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  /* Cursor variant */
+  .logo--cursor {
+    font-family: var(--font-ar-display);
+    font-weight: 600;
+    gap: 0.15em;
+  }
+  .logo--cursor.logo--xs { font-size: 1.1rem; }
+  .logo--cursor.logo--sm { font-size: 1.5rem; }
+  .logo--cursor.logo--md { font-size: 2rem; }
+  .logo--cursor.logo--lg { font-size: 3.5rem; }
+
+  .logo__glyph { display: inline-block; }
+
+  .logo__caret {
+    display: inline-block;
+    width: 0.12em;
+    height: 0.85em;
+    background: var(--vermillion);
+    margin-inline-start: 0.05em;
+    animation: blink 1.2s steps(2) infinite;
+  }
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* Seal variant */
+  .logo--seal.logo--xs { width: 24px; height: 24px; }
+  .logo--seal.logo--sm { width: 40px; height: 40px; }
+  .logo--seal.logo--md { width: 64px; height: 64px; }
+  .logo--seal.logo--lg { width: 120px; height: 120px; }
+
+  /* Wordmark */
+  .logo--wordmark { gap: var(--s-3); }
+  .logo--wordmark .logo__seal-mini { width: 32px; height: 32px; }
+  .logo--wordmark .logo__text {
+    font-family: var(--font-ar-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+  }
+  .logo--wordmark.logo--lg .logo__seal-mini { width: 56px; height: 56px; }
+  .logo--wordmark.logo--lg .logo__text { font-size: 2rem; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo__caret { animation: none; opacity: 1; }
+  }
+</style>

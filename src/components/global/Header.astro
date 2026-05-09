@@ -1,0 +1,261 @@
+---
+import Logo from './Logo.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import type { Locale } from '@/i18n';
+import { useTranslations } from '@/i18n/ui';
+
+interface Props { locale: Locale; }
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const path = Astro.url.pathname;
+const isActive = (p: string) => path === p || path.startsWith(p + '/');
+
+const navItems = [
+  { href: `/${locale}/`,         label: t('nav.diwan'),    match: `/${locale}` },
+  { href: `/${locale}/projects/`,label: t('nav.projects'), match: `/${locale}/projects` },
+  { href: `/${locale}/about/`,   label: t('nav.about'),    match: `/${locale}/about` },
+];
+---
+
+<header class="topbar">
+  <div class="topbar__inner container">
+    <a href={`/${locale}/`} class="topbar__brand" aria-label="raddah.net home">
+      <Logo variant="cursor" size="sm" />
+      <span class="topbar__brand-text">raddah.net</span>
+    </a>
+
+    <nav class="topbar__nav" aria-label={t('meta.menu')}>
+      <ul>
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              class={isActive(item.match) ? 'is-active' : ''}
+            >{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="topbar__right">
+      <LanguageSwitcher locale={locale} />
+      <ThemeToggle locale={locale} />
+      <button
+        class="topbar__icon-btn"
+        id="search-trigger"
+        aria-label={t('nav.search')}
+        type="button"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.35-4.35"/>
+        </svg>
+      </button>
+      <button
+        class="topbar__icon-btn topbar__menu"
+        id="mobile-menu-trigger"
+        aria-label={t('meta.menu')}
+        type="button"
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+{/* Mobile drawer */}
+<div class="mobile-drawer" id="mobile-drawer" hidden>
+  <div class="mobile-drawer__head">
+    <a href={`/${locale}/`} class="topbar__brand">
+      <Logo variant="cursor" size="sm" />
+      <span class="topbar__brand-text">raddah.net</span>
+    </a>
+    <button class="topbar__icon-btn" id="mobile-close" aria-label={t('search.close')} type="button">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <ul class="mobile-drawer__list">
+    {navItems.map((item, i) => (
+      <li>
+        <a href={item.href}>
+          <span>{item.label}</span>
+          <span class="num">{String(i + 1).padStart(2, '0')}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+  <div class="mobile-drawer__foot">
+    <LanguageSwitcher locale={locale} />
+  </div>
+</div>
+
+<style>
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-block-end: 1px solid var(--rule);
+  }
+
+  .topbar__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-5);
+    padding-block: var(--s-3);
+  }
+
+  .topbar__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .topbar__brand-text {
+    font-family: var(--font-ar-display);
+    font-size: var(--t-lg);
+    font-weight: 500;
+  }
+
+  .topbar__nav { display: none; }
+  @media (min-width: 768px) {
+    .topbar__nav { display: block; }
+  }
+  .topbar__nav ul {
+    display: flex;
+    gap: var(--s-5);
+  }
+  .topbar__nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-family: var(--font-ar-display);
+    font-size: var(--t-sm);
+    padding-block: var(--s-1);
+    position: relative;
+    transition: color var(--t-fast) var(--ease);
+  }
+  .topbar__nav a:hover { color: var(--vermillion); }
+  .topbar__nav a.is-active::before {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    inset-inline: 0;
+    height: 1px;
+    background: var(--vermillion);
+  }
+
+  .topbar__right {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+  }
+
+  .topbar__icon-btn {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    color: var(--ink-soft);
+    background: transparent;
+    cursor: pointer;
+    transition: all var(--t-fast) var(--ease);
+  }
+  .topbar__icon-btn:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  .topbar__menu { display: grid; }
+  @media (min-width: 768px) {
+    .topbar__menu { display: none; }
+  }
+
+  /* Mobile drawer */
+  .mobile-drawer {
+    position: fixed;
+    inset: 0;
+    background: var(--paper);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+  .mobile-drawer[hidden] { display: none; }
+
+  .mobile-drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s-4) var(--gutter);
+    border-block-end: 1px solid var(--rule);
+  }
+  .mobile-drawer__list { flex: 1; }
+  .mobile-drawer__list li { border-block-end: 1px solid var(--rule); }
+  .mobile-drawer__list a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--s-5) var(--gutter);
+    font-family: var(--font-ar-display);
+    font-size: var(--t-2xl);
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .mobile-drawer__list .num {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--ink-faint);
+  }
+  .mobile-drawer__foot {
+    padding: var(--s-5) var(--gutter);
+    border-block-start: 1px solid var(--rule);
+  }
+</style>
+
+<script>
+  const trigger = document.getElementById('mobile-menu-trigger');
+  const closeBtn = document.getElementById('mobile-close');
+  const drawer = document.getElementById('mobile-drawer');
+
+  trigger?.addEventListener('click', () => {
+    drawer?.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
+  });
+  closeBtn?.addEventListener('click', () => {
+    drawer?.setAttribute('hidden', '');
+    document.body.style.overflow = '';
+  });
+  drawer?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      drawer.setAttribute('hidden', '');
+      document.body.style.overflow = '';
+    })
+  );
+
+  // Search trigger — dispatches a custom event SearchDialog listens for
+  document.getElementById('search-trigger')?.addEventListener('click', () => {
+    document.dispatchEvent(new CustomEvent('open-search'));
+  });
+
+  // Cmd/Ctrl + K shortcut
+  document.addEventListener('keydown', (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      document.dispatchEvent(new CustomEvent('open-search'));
+    }
+  });
+</script>

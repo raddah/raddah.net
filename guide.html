@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>كتيب التشغيل — raddah.net</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --surface: #171921;
+      --surface-2: #1e212b;
+      --text: #e6e8ef;
+      --text-dim: #a0a5b8;
+      --accent: #e04f3e;
+      --accent-2: #2dd4bf;
+      --border: #2a2e3a;
+      --code-bg: #11131a;
+      --radius: 14px;
+      --shadow: 0 10px 40px rgba(0,0,0,.35);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans Arabic", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.85;
+    }
+    a { color: var(--accent-2); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Sidebar */
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 32px;
+      padding: 32px;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; padding: 18px; }
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 28px;
+      align-self: start;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .sidebar h2 {
+      font-size: 16px;
+      margin: 0 0 12px;
+      color: var(--accent);
+      letter-spacing: .5px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .sidebar li + li { margin-top: 6px; }
+    .sidebar a {
+      display: block;
+      padding: 8px 12px;
+      border-radius: 10px;
+      color: var(--text-dim);
+      font-size: 14px;
+      transition: .2s;
+    }
+    .sidebar a:hover, .sidebar a.is-active {
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    /* Content */
+    .content { min-width: 0; }
+    .hero {
+      background: linear-gradient(135deg, var(--surface), var(--surface-2));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      margin-bottom: 32px;
+    }
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 32px;
+      color: var(--text);
+    }
+    .hero p {
+      margin: 0;
+      color: var(--text-dim);
+      font-size: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+    }
+    .card h3 {
+      margin: 22px 0 10px;
+      font-size: 17px;
+      color: var(--accent-2);
+    }
+    .card p, .card li { color: var(--text-dim); }
+    .card ul, .card ol { padding-right: 20px; }
+    .card li + li { margin-top: 8px; }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(224,79,62,.12);
+      color: var(--accent);
+      border: 1px solid rgba(224,79,62,.25);
+      margin-left: 6px;
+    }
+    .badge.ok {
+      background: rgba(45,212,191,.12);
+      color: var(--accent-2);
+      border-color: rgba(45,212,191,.25);
+    }
+
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.7;
+      direction: ltr;
+      text-align: left;
+    }
+    code {
+      font-family: "SF Mono", "Fira Code", "Cascadia Code", monospace;
+      color: #e6e8ef;
+    }
+    .inline-code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #f0b090;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: grid; place-items: center;
+      font-weight: 700; flex-shrink: 0;
+      font-size: 15px;
+    }
+    .step-body { flex: 1; }
+    .step-title { font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .step-desc { color: var(--text-dim); font-size: 14px; }
+
+    .tip {
+      background: rgba(45,212,191,.08);
+      border: 1px solid rgba(45,212,191,.25);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    .tip strong { color: var(--accent-2); }
+
+    .warn {
+      background: rgba(224,79,62,.08);
+      border: 1px solid rgba(224,79,62,.25);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    .warn strong { color: var(--accent); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid var(--border);
+      padding: 12px;
+      text-align: right;
+    }
+    th { background: var(--surface-2); color: var(--text); }
+    td { color: var(--text-dim); }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-dim);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="الفهرس">
+      <h2>📑 الفهرس</h2>
+      <ul>
+        <li><a href="#intro">١. مقدمة</a></li>
+        <li><a href="#structure">٢. هيكل المشروع</a></li>
+        <li><a href="#new-post">٣. إنشاء مقالة جديدة</a></li>
+        <li><a href="#i18n">٤. الترجمة للثلاث لغات</a></li>
+        <li><a href="#draft-publish">٥. من المسودة إلى النشر</a></li>
+        <li><a href="#github">٦. رفع التحديثات على GitHub</a></li>
+        <li><a href="#cloudflare">٧. الربط مع Cloudflare</a></li>
+        <li><a href="#features">٨. المميزات المستخدمة</a></li>
+        <li><a href="#not-used">٩. مميزات Astro لم تُستخدم</a></li>
+        <li><a href="#troubleshoot">١٠. حل المشكلات الشائعة</a></li>
+        <li><a href="#checklist">١١. قائمة التحقق السريعة</a></li>
+      </ul>
+    </aside>
+
+    <!-- Content -->
+    <main class="content">
+      <div class="hero">
+        <h1>كتيب تشغيل raddah.net</h1>
+        <p>دليل شامل خطوة بخطوة لنشر المحتوى بالعربية والإنجليزية والصينية، ورفعه على GitHub، وربطه بـ Cloudflare عبر Astro.</p>
+      </div>
+
+      <!-- 1 -->
+      <section class="card" id="intro">
+        <h2><span>١.</span> مقدمة</h2>
+        <p>هذا الموقع مدونة شخصية ثلاثية اللغات (عربي / إنجليزي / صيني) مبنية بإطار <strong>Astro</strong> وتُستضاف على <strong>Cloudflare Pages</strong>. الهدف من هذا الكتيب هو توفير مرجع واضح لكل عملية نشر — من كتابة المقال حتى ظهوره على الإنترنت.</p>
+        <div class="tip">
+          <strong>ملاحظة:</strong> الموقع يستخدم نظام "Content Collections" في Astro، مما يعني أن كل مقالة هي ملف Markdown/MDX منفصل مع بيانات Frontmatter (عنوان، وصف، تاريخ، تصنيف... إلخ).
+        </div>
+      </section>
+
+      <!-- 2 -->
+      <section class="card" id="structure">
+        <h2><span>٢.</span> هيكل المشروع</h2>
+        <pre><code>raddah-astro-dev/
+├── src/
+│   ├── content/blog/        ← مقالات المدونة
+│   │   ├── ar/              ← النسخة العربية
+│   │   ├── en/              ← النسخة الإنجليزية
+│   │   └── zh/              ← النسخة الصينية
+│   ├── pages/               ← صفحات Astro
+│   │   ├── ar/ | en/ | zh/  ← كل لغة لها مجلد
+│   ├── i18n/                ← الترجمة والإعدادات
+│   ├── components/          ← المكونات
+│   ├── layouts/             ← قوالب الصفحات
+│   └── styles/              ← CSS المخصص
+├── public/                  ← الصور والملفات الثابتة
+├── scripts/new-post.ts      ← سكريبت إنشاء المقالات
+├── astro.config.mjs         ← إعدادات Astro
+└── .github/workflows/       ← GitHub Actions (النشر التلقائي)</code></pre>
+      </section>
+
+      <!-- 3 -->
+      <section class="card" id="new-post">
+        <h2><span>٣.</span> إنشاء مقالة جديدة</h2>
+        <p>هناك طريقتان: الطريقة التلقائية (موصى بها) واليدوية.</p>
+
+        <h3>الطريقة الأولى: السكريبت التلقائي</h3>
+        <div class="step">
+          <div class="step-num">١</div>
+          <div class="step-body">
+            <div class="step-title">تشغيل الأمر</div>
+            <div class="step-desc">افتح الطرفية في مجلد المشروع ونفّذ:</div>
+            <pre><code>npm run new:post</code></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٢</div>
+          <div class="step-body">
+            <div class="step-title">اختيار اللغة</div>
+            <div class="step-desc">ستظهر قائمة بثلاث خيارات:</div>
+            <ul>
+              <li>العربية (ar)</li>
+              <li>English (en)</li>
+              <li>中文 (zh)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٣</div>
+          <div class="step-body">
+            <div class="step-title">إدخال البيانات</div>
+            <div class="step-desc">أدخل العنوان، الوصف القصير، التصنيف، والوسوم (مفصولة بفواصل). إذا كانت اللغة عربية، سيُطلب منك إدخال <span class="inline-code">slug</span> بالإنجليزية.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٤</div>
+          <div class="step-body">
+            <div class="step-title">التحقق من الإنشاء</div>
+            <div class="step-desc">سيتم إنشاء ملف Markdown في المسال الصحيح، مثال:</div>
+            <pre><code>src/content/blog/ar/my-new-post.md</code></pre>
+          </div>
+        </div>
+
+        <h3>الطريقة الثانية: يدويًا</h3>
+        <div class="step">
+          <div class="step-num">١</div>
+          <div class="step-body">
+            <div class="step-title">إنشاء الملف</div>
+            <div class="step-desc">أنشئ ملف <span class="inline-code">.md</span> داخل <span class="inline-code">src/content/blog/XX/</span> حيث XX هي رمز اللغة.</div>
+            <pre><code>---
+title: "عنوان المقالة"
+description: "وصف قصير"
+publishDate: 2026-05-09
+author: "Raddah"
+category: "تقنية"
+tags: ["astro", "مدونة"]
+featured: false
+draft: true
+translations: {}
+---
+
+اكتب المحتوى هنا بصيغة Markdown...</code></pre>
+          </div>
+        </div>
+        <div class="tip">
+          <strong>تلميح:</strong> اترك <span class="inline-code">draft: true</span> أثناء الكتابة، وغيّره إلى <span class="inline-code">false</span> عندما تصبح جاهزًا للنشر.
+        </div>
+      </section>
+
+      <!-- 4 -->
+      <section class="card" id="i18n">
+        <h2><span>٤.</span> الترجمة للثلاث لغات</h2>
+        <p>الموقع يدعم المحتوى المتوازي: كل مقالة يمكن أن تكون لها نسخ في اللغات الأخرى.</p>
+
+        <h3>ربط الترجمات ببعضها</h3>
+        <p>في الـ Frontmatter، استخدم حقل <span class="inline-code">translations</span> لربط النسخ المختلفة بنفس المقالة:</p>
+        <pre><code>---
+title: "عنوان المقالة العربي"
+translations:
+  en: "english-slug"
+  zh: "chinese-slug"
+---</code></pre>
+
+        <h3>الترجمة النصية للواجهة</h3>
+        <p>كل النصوص الثابتة (القائمة، الأزرار، التذييل...) توجد في:</p>
+        <pre><code>src/i18n/ui.ts</code></pre>
+        <p>عند إضافة نص جديد، يجب إضافته للثلاث لغات:</p>
+        <pre><code>'nav.newItem': 'عنصر جديد',      // ar
+'nav.newItem': 'New Item',       // en
+'nav.newItem': '新项目',           // zh</code></pre>
+
+        <div class="warn">
+          <strong>تنبيه:</strong> إذا أضفت نصًا جديدًا في <span class="inline-code">ui.ts</span> ولم تترجمه لإحدى اللغات، سيظهر بشكل غير صحيح في تلك النسخة.
+        </div>
+      </section>
+
+      <!-- 5 -->
+      <section class="card" id="draft-publish">
+        <h2><span>٥.</span> من المسودة إلى النشر</h2>
+
+        <div class="step">
+          <div class="step-num">١</div>
+          <div class="step-body">
+            <div class="step-title">كتابة المحتوى</div>
+            <div class="step-desc">استخدم Markdown العادي أو MDX. يدعم الموقع: جداول، أكواد ملونة، اقتباسات، وصور.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٢</div>
+          <div class="step-body">
+            <div class="step-title">معاينة محلية</div>
+            <div class="step-desc">شغّل خادم التطوير:</div>
+            <pre><code>npm run dev</code></pre>
+            <div class="step-desc">ثم افتح <a href="http://localhost:4321" target="_blank">http://localhost:4321</a></div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٣</div>
+          <div class="step-body">
+            <div class="step-title">التحقق من الأخطاء</div>
+            <div class="step-desc">نفّذ فحص الأنواع (TypeScript) قبل البناء:</div>
+            <pre><code>npm run check</code></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٤</div>
+          <div class="step-body">
+            <div class="step-title">بناء الموقع</div>
+            <div class="step-desc">تأكد أن البناء ينجح بدون أخطاء:</div>
+            <pre><code>npm run build</code></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٥</div>
+          <div class="step-body">
+            <div class="step-title">نشر المقالة</div>
+            <div class="step-desc">غيّر <span class="inline-code">draft: true</span> إلى <span class="inline-code">draft: false</span> في الملف.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6 -->
+      <section class="card" id="github">
+        <h2><span>٦.</span> رفع التحديثات على GitHub</h2>
+        <p>المشروع مرتبط بمستودع Git. كل تعديل يتم رفعه يُشغّل عملية بناء ونشر تلقائيًا.</p>
+
+        <h3>الخطوات</h3>
+        <div class="step">
+          <div class="step-num">١</div>
+          <div class="step-body">
+            <div class="step-title">مراجعة التغييرات</div>
+            <pre><code>git status</code></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٢</div>
+          <div class="step-body">
+            <div class="step-title">إضافة الملفات</div>
+            <pre><code>git add src/content/blog/ar/my-post.md</code></pre>
+            <div class="step-desc">أو أضف كل شيء:</div>
+            <pre><code>git add .</code></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٣</div>
+          <div class="step-body">
+            <div class="step-title">إنشاء Commit</div>
+            <pre><code>git commit -m "إضافة مقالة: عنوان المقالة"</code></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">٤</div>
+          <div class="step-body">
+            <div class="step-title">الرفع إلى GitHub</div>
+            <pre><code>git push origin main</code></pre>
+          </div>
+        </div>
+
+        <div class="tip">
+          <strong>نصيحة:</strong> اجعل رسالة Commit واضحة ووصفية، مثل: <span class="inline-code">"add: agi-era post (ar/en/zh)"</span>.
+        </div>
+      </section>
+
+      <!-- 7 -->
+      <section class="card" id="cloudflare">
+        <h2><span>٧.</span> الربط مع Cloudflare</h2>
+        <p>عند كل <span class="inline-code">git push</span> على فرع <span class="inline-code">main</span>، يعمل GitHub Action تلقائيًا لبناء الموقع ونشره على Cloudflare Pages.</p>
+
+        <h3>كيف يعمل؟</h3>
+        <ol>
+          <li>GitHub يستقبل التعديلات.</li>
+          <li>يعمل ملف <span class="inline-code">.github/workflows/deploy.yml</span>.</li>
+          <li>يثبت الاعتماديات: <span class="inline-code">npm ci</span>.</li>
+          <li>يفحص الأنواع: <span class="inline-code">npx astro check</span>.</li>
+          <li>يبني الموقع: <span class="inline-code">npm run build</span>.</li>
+          <li>يرفع مجلد <span class="inline-code">dist/</span> إلى Cloudflare Pages.</li>
+        </ol>
+
+        <h3>الإعدادات المطلوبة في GitHub</h3>
+        <p>في إعدادات المستودع (Settings → Secrets and variables → Actions) يجب إضافة:</p>
+        <table>
+          <tr>
+            <th>الاسم</th>
+            <th>الوصف</th>
+          </tr>
+          <tr>
+            <td><span class="inline-code">CLOUDFLARE_API_TOKEN</span></td>
+            <td>مفتاح API من Cloudflare (صلاحيات: Cloudflare Pages:Edit)</td>
+          </tr>
+          <tr>
+            <td><span class="inline-code">CLOUDFLARE_ACCOUNT_ID</span></td>
+            <td>معرف حساب Cloudflare</td>
+          </tr>
+        </table>
+
+        <div class="tip">
+          <strong>تلميح:</strong> يمكنك مراقبة حالة البناء من تبويب <strong>Actions</strong> في مستودع GitHub. إذا فشل البناء، ستجد تفاصيل الخطأ هناك.
+        </div>
+      </section>
+
+      <!-- 8 -->
+      <section class="card" id="features">
+        <h2><span>٨.</span> المميزات المستخدمة في Astro</h2>
+        <div class="grid-2">
+          <div>
+            <h3>المحتوى</h3>
+            <ul>
+              <li><span class="badge ok">مُفعّل</span> Content Collections مع تحقق Zod</li>
+              <li><span class="badge ok">مُفعّل</span> i18n Routing (ar/en/zh)</li>
+              <li><span class="badge ok">مُفعّل</span> MDX لدعم المكونات داخل المقالات</li>
+              <li><span class="badge ok">مُفعّل</span> RSS Feed لكل لغة</li>
+              <li><span class="badge ok">مُفعّل</span> Sitemap دولي</li>
+            </ul>
+          </div>
+          <div>
+            <h3>الأداء والتصميم</h3>
+            <ul>
+              <li><span class="badge ok">مُفعّل</span> صور محسّنة عبر Sharp</li>
+              <li><span class="badge ok">مُفعّل</span> Shiki + rehype-pretty-code (أكواد ملونة)</li>
+              <li><span class="badge ok">مُفعّل</span> Pagefind (بحث فوري)</li>
+              <li><span class="badge ok">مُفعّل</span> CSS مخصص مع متغيرات التصميم</li>
+              <li><span class="badge ok">مُفعّل</span> IntersectionObserver لجدول المحتويات</li>
+            </ul>
+          </div>
+          <div>
+            <h3>الأتمتة</h3>
+            <ul>
+              <li><span class="badge ok">مُفعّل</span> GitHub Actions للنشر التلقائي</li>
+              <li><span class="badge ok">مُفعّل</span> سكريبت CLI لإنشاء المقالات</li>
+              <li><span class="badge ok">مُفعّل</span> Prettier لتنسيق الكود</li>
+              <li><span class="badge ok">مُفعّل</span> TypeScriptstrict</li>
+            </ul>
+          </div>
+          <div>
+            <h3>UX / واجهة المستخدم</h3>
+            <ul>
+              <li><span class="badge ok">مُفعّل</span> تبديل الوضع الفاتح/الداكن</li>
+              <li><span class="badge ok">مُفعّل</span> مؤشر تقدم القراءة</li>
+              <li><span class="badge ok">مُفعّل</span> أزرار المشاركة (X / LinkedIn / نسخ)</li>
+              <li><span class="badge ok">مُفعّل</span> مقالات ذات صلة</li>
+              <li><span class="badge ok">مُفعّل</span> تخطيط RTL/LTR حسب اللغة</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9 -->
+      <section class="card" id="not-used">
+        <h2><span>٩.</span> مميزات Astro <strong>لم تُستخدم</strong></h2>
+        <p>هذه ميزات متاحة في Astro لكن المشروع الحالي لا يستخدمها — يمكنك إضافتها مستقبلًا إذا احتجتها:</p>
+        <table>
+          <tr>
+            <th>الميزة</th>
+            <th>السبب / البديل الحالي</th>
+          </tr>
+          <tr>
+            <td>Server Islands</td>
+            <td>الموقع static بالكامل؛ لا حاجة لجلب ديناميكي من الخادم.</td>
+          </tr>
+          <tr>
+            <td>View Transitions API</td>
+            <td>لم تُفعل؛ التنقل الحالي تقليدي سريع بما يكفي.</td>
+          </tr>
+          <tr>
+            <td>Astro DB</td>
+            <td>لا توجد بيانات ديناميكية أو تعليقات أو مستخدمين.</td>
+          </tr>
+          <tr>
+            <td>Content Layer (الجديد)</td>
+            <td>يُستخدم <span class="inline-code">glob loader</span> التقليدي؛ يمكن الترقية مستقبلًا.</td>
+          </tr>
+          <tr>
+            <td>React / Vue / Svelte</td>
+            <td>كل المكونات مكتوبة بـ Astro纯 (zero JS) لأقصى سرعة.</td>
+          </tr>
+          <tr>
+            <td>Edge Middleware</td>
+            <td>لا حاجة لتحويلات على الطلبات؛ static site كافٍ.</td>
+          </tr>
+          <tr>
+            <td>Partytown</td>
+            <td>لا توجد سكريبتات طرف ثالث ثقيلة (Google Analytics إلخ).</td>
+          </tr>
+        </table>
+      </section>
+
+      <!-- 10 -->
+      <section class="card" id="troubleshoot">
+        <h2><span>١٠.</span> حل المشكلات الشائعة</h2>
+
+        <h3>❌ البناء يفشل مع "Type error"</h3>
+        <pre><code>npm run check</code></pre>
+        <p>اقرأ رسالة الخطأ وصحّح نوع البيانات في Frontmatter. غالبًا يكون سببه:</p>
+        <ul>
+          <li>تاريخ غير صالح في <span class="inline-code">publishDate</span></li>
+          <li>حقل مفقود (مثل <span class="inline-code">category</span>)</li>
+        </ul>
+
+        <h3>❌ المقالة لا تظهر في الموقع</h3>
+        <ul>
+          <li>تأكد أن <span class="inline-code">draft: false</span></li>
+          <li>تأكد أن الملف في المجلد الصحيح: <span class="inline-code">src/content/blog/XX/</span></li>
+          <li>تأكد من صحة الامتداد <span class="inline-code">.md</span> أو <span class="inline-code">.mdx</span></li>
+        </ul>
+
+        <h3>❌ الترجمة لا تظهر في Language Switcher</h3>
+        <ul>
+          <li>تأكد من ربط <span class="inline-code">translations</span> في Frontmatter.</li>
+          <li>تأكد أن slug اللغة الأخرى مطابق لاسم الملف.</li>
+        </ul>
+
+        <h3>❌ Pagefind (البحث) لا يعمل محليًا</h3>
+        <div class="step-desc">البحث يحتاج بناءً أولًا لإنشاء الفهرس:</div>
+        <pre><code>npm run build</code></pre>
+        <div class="step-desc">ثم:</div>
+        <pre><code>npm run preview</code></pre>
+
+        <h3>❌ GitHub Action فشل في النشر</h3>
+        <ul>
+          <li>تحقق من صحة <span class="inline-code">CLOUDFLARE_API_TOKEN</span> وصلاحياته.</li>
+          <li>تأكد أن <span class="inline-code">CLOUDFLARE_ACCOUNT_ID</span> صحيح.</li>
+          <li>راجع سجلّ Actions في GitHub للتفاصيل.</li>
+        </ul>
+      </section>
+
+      <!-- 11 -->
+      <section class="card" id="checklist">
+        <h2><span>١١.</span> قائمة التحقق السريعة (Checklist)</h2>
+        <p>قبل كل نشر، راجع هذه القائمة:</p>
+        <ul>
+          <li>☐ المقالة مكتوبة بصيغة Markdown/MDX صحيحة</li>
+          <li>☐ Frontmatter كامل (title, description, publishDate, category)</li>
+          <li>☐ draft: false للمقالات الجاهزة</li>
+          <li>☐ الترجمة موجودة لكل اللغات المطلوبة (إن وُجدت)</li>
+          <li>☐ الصور موجودة في مجلد <span class="inline-code">public/images/blog/</span></li>
+          <li>☐ npm run check — لا أخطاء</li>
+          <li>☐ npm run build — نجاح</li>
+          <li>☐ git commit واضح ووصفي</li>
+          <li>☐ git push origin main</li>
+          <li>☐ التحقق من تبويب Actions في GitHub</li>
+          <li>☐ فتح raddah.net والتأكد من ظهور المحتوى</li>
+        </ul>
+        <div class="tip" style="margin-top:18px">
+          <strong>بعد النشر:</strong> تحقق من العنوان على وسائل التواصل (Open Graph) باستخدام أداة مثل <a href="https://www.opengraph.xyz" target="_blank">opengraph.xyz</a>.
+        </div>
+      </section>
+
+      <footer>
+        كتيب التشغيل — raddah.net | مبني بـ HTML/CSS ساكن | آخر تحديث: مايو ٢٠٢٦
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Highlight current section in sidebar
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.sidebar a[href^="#"]');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          links.forEach(link => {
+            link.classList.toggle('is-active', link.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -60% 0px' });
+    sections.forEach(s => observer.observe(s));
+  </script>
+</body>
+</html>

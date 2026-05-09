@@ -1,0 +1,120 @@
+---
+import type { Locale } from '@/i18n';
+import type { CollectionEntry } from 'astro:content';
+import { useTranslations } from '@/i18n/ui';
+import { formatDate } from '@/utils/date';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  locale: Locale;
+  readingMinutes: number;
+}
+
+const { post, locale, readingMinutes } = Astro.props;
+const t = useTranslations(locale);
+const { data } = post;
+---
+
+<header class="post-header container">
+  <div class="post-header__kicker">
+    <span>{data.category}</span>
+  </div>
+
+  <h1 class="post-header__title">{data.title}</h1>
+
+  {data.description && (
+    <p class="post-header__subtitle">{data.description}</p>
+  )}
+
+  <div class="post-header__meta">
+    <span>{t('post.author')} {data.author}</span>
+    <time datetime={data.publishDate.toISOString()}>
+      {formatDate(data.publishDate, locale)}
+    </time>
+    <span>{readingMinutes} {t('post.readingTime')}</span>
+    {data.updatedDate && (
+      <span class="updated">
+        {t('post.updatedOn')} {formatDate(data.updatedDate, locale)}
+      </span>
+    )}
+  </div>
+</header>
+
+<style>
+  .post-header {
+    padding-block: var(--s-9) var(--s-6);
+    display: grid;
+    gap: var(--s-5);
+    text-align: center;
+    border-block-end: 1px solid var(--rule);
+  }
+  .post-header__kicker {
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--vermillion);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3);
+  }
+  .post-header__kicker::before,
+  .post-header__kicker::after {
+    content: '';
+    flex: 0 0 40px;
+    height: 1px;
+    background: var(--vermillion);
+  }
+  .post-header__title {
+    font-family: var(--font-ar-display);
+    font-size: clamp(2rem, 5vw, var(--t-5xl));
+    line-height: 1.1;
+    font-weight: 500;
+    max-width: 22ch;
+    margin-inline: auto;
+  }
+  :global([lang="en"]) .post-header__title { font-family: var(--font-en-display); font-style: italic; font-weight: 400; }
+  :global([lang="zh"]) .post-header__title { font-family: var(--font-zh); font-weight: 600; }
+
+  .post-header__subtitle {
+    font-family: var(--font-ar-body);
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: var(--t-lg);
+    max-width: 36ch;
+    margin-inline: auto;
+    line-height: 1.6;
+  }
+  :global([lang="en"]) .post-header__subtitle { font-family: var(--font-en-body); }
+  :global([lang="zh"]) .post-header__subtitle { font-family: var(--font-zh); }
+
+  .post-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3) var(--s-4);
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: var(--t-xs);
+    color: var(--ink-mute);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-block-start: var(--s-4);
+    border-block-start: 1px solid var(--rule);
+    width: 80%;
+    margin-inline: auto;
+  }
+  .post-header__meta > * {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+  .post-header__meta > *::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--vermillion);
+    border-radius: 50%;
+  }
+  .post-header__meta .updated { color: var(--vermillion); }
+</style>
