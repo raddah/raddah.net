@@ -2,7 +2,7 @@
 import type { Locale } from '@/i18n';
 import type { CollectionEntry } from 'astro:content';
 import { useTranslations } from '@/i18n/ui';
-import { formatDate, formatNumber } from '@/utils/date';
+import { formatDate } from '@/utils/date';
 import { readingTime } from '@/utils/reading-time';
 import { getSlugFromId } from '@/utils/content';
 import PostThumbnail from '@/components/ui/PostThumbnail.astro';
@@ -32,7 +32,6 @@ const t = useTranslations(locale);
     {posts.map((post, i) => {
       const slug = getSlugFromId(post.id);
       const minutes = readingTime(post.body ?? '', locale);
-      const num = formatNumber(startNum + i, locale).padStart(2, '0');
       return (
         <li class="diwan__item">
           <a href={`/${locale}/blog/${slug}/`} class="diwan__thumb-link">

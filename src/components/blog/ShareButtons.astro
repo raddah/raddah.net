@@ -67,7 +67,7 @@ const t = useTranslations(locale);
   .share__btn:hover { border-color: var(--ink); color: var(--ink); }
 </style>
 
-<script define:vars={{ title }}>
+<script is:inline define:vars={{ title }}>
   const url = window.location.href;
 
   document.querySelector('[data-action="copy"]')?.addEventListener('click', async (e) => {

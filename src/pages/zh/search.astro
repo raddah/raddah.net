@@ -90,6 +90,7 @@ const locale = 'zh';
     if (!mount) return;
     
     try {
+      // @ts-expect-error pagefind generated at build time
       const module = await import(/* @vite-ignore */ '/pagefind/pagefind-ui.js');
       const PagefindUI = module.default;
       
