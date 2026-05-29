@@ -164,8 +164,6 @@ const t = useTranslations(locale);
     const closeBtn = document.getElementById('search-close');
     const mount = document.getElementById('pagefind-mount');
     let initialized = false;
-    let pagefindUI: any = null;
-
     async function initPagefind() {
       if (initialized || !mount) return;
       initialized = true;
@@ -178,13 +176,14 @@ const t = useTranslations(locale);
         document.head.appendChild(cssLink);
 
         // Dynamically import Pagefind UI
+        // @ts-expect-error pagefind generated at build time
         const module = await import(/* @vite-ignore */ '/pagefind/pagefind-ui.js');
         const PagefindUI = module.default;
         
         // Clear loading state
         mount.innerHTML = '';
         
-        pagefindUI = new PagefindUI({
+        new PagefindUI({
           element: '#pagefind-mount',
           showSubResults: true,
           showImages: false,
