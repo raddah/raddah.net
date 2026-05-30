@@ -2,9 +2,9 @@ name: Deploy to Cloudflare Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, Test]
   pull_request:
-    branches: [main]
+    branches: [main, Test]
 
 permissions:
   contents: read
@@ -45,4 +45,4 @@ jobs:
           projectName: raddah-net
           directory: dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.event_name == 'pull_request' && github.head_ref || 'main' }}
+          branch: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
