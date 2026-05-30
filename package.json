@@ -7,20 +7,21 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "npm run build && wrangler dev",
     "check": "astro check",
     "lint": "eslint . --ext .ts,.astro",
     "format": "prettier --write .",
     "postbuild": "pagefind --site dist",
-    "new:post": "tsx scripts/new-post.ts"
+    "new:post": "tsx scripts/new-post.ts",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "12",
     "@astrojs/mdx": "^4.0.0",
     "@astrojs/rss": "^4.0.0",
     "@astrojs/sitemap": "^3.2.0",
-    "@fontsource/fraunces": "^5.2.9",
     "astro": "^5.0.0",
-    "astro-og-canvas": "^0.11.1",
     "pagefind": "^1.1.0",
     "rehype-pretty-code": "^0.14.0",
     "shiki": "^1.22.0"
@@ -31,6 +32,7 @@
     "prettier": "^3.3.0",
     "prettier-plugin-astro": "^0.14.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.6.0"
+    "typescript": "^5.6.0",
+    "wrangler": "^4.95.0"
   }
 }

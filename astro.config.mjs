@@ -4,6 +4,8 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import rehypePrettyCode from 'rehype-pretty-code';
 
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   site: 'https://raddah.net',
 
@@ -76,4 +78,6 @@ export default defineConfig({
       },
     ],
   },
+
+  adapter: cloudflare()
 });
