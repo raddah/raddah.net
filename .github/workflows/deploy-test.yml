@@ -1,10 +1,10 @@
-name: Deploy to Cloudflare Pages
+name: Deploy Test Branch
 
 on:
   push:
-    branches: [main]
+    branches: [Test]
   pull_request:
-    branches: [main]
+    branches: [Test]
 
 permissions:
   contents: read
@@ -12,9 +12,9 @@ permissions:
   pull-requests: write
 
 jobs:
-  deploy:
+  deploy-test:
     runs-on: ubuntu-latest
-    name: Build & Deploy
+    name: Build & Deploy Test
 
     steps:
       - name: Checkout
@@ -37,7 +37,7 @@ jobs:
         env:
           SITE_URL: https://raddah.net
 
-      - name: Deploy to Cloudflare Pages
+      - name: Deploy to Cloudflare Pages (Test)
         uses: cloudflare/pages-action@v1
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -45,4 +45,4 @@ jobs:
           projectName: raddah-net
           directory: dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
+          branch: test-preview
