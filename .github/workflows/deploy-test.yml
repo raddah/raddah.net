@@ -35,7 +35,7 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          SITE_URL: https://raddah.net
+          SITE_URL: https://raddah-net-astro.radz.workers.dev
 
       - name: Deploy to Cloudflare Pages (Test)
         uses: cloudflare/pages-action@v1
