@@ -17,9 +17,12 @@ const meta = localeConfig[locale];
 const t = useTranslations(locale);
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const pathSegment = Astro.url.pathname.replace(/^\/|\/$/g, '').replace(/\//g, '/');
+const ogPath = pathSegment ? `/og/${pathSegment}.png` : '/og/ar/index.png';
 const ogImage = image
   ? new URL(image, Astro.site).toString()
-  : new URL('/og-default.png', Astro.site).toString();
+  : new URL(ogPath, Astro.site).toString();
 
 // Build alternate language URLs (for hreflang tags)
 const path = Astro.url.pathname.replace(/^\/[a-z]{2}/, '');
